@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{#% block head_printstuff %#}
+{#% endblock %#}
+
+{% block sidebar %}
+{% endblock %}
+
+{#% block breadcrumb_zone %#}
+{#% endblock %#}
+
+{% block settingsbox %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- Regresar al trabajo -->
+        <div class="col-xs-12 center">
+
+            <a href="/validador/validar/{{ trabajo.pk }}">Regresar al listado de trabajo</a>
+
+        </div>
+    </div>
+    <div class="space-12"></div>
+    <div class="row">
+        <!-- Tabla de contenido -->
+        <div class="col-xs-12">
+            {% for valor in record %}
+                {% for key, value in valor.items %}
+                    <div class="col-xs-4">
+                        <strong>{{ key }} => </strong>{{ value }}<br />
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block inlinescripts %}
+
+{% endblock %}

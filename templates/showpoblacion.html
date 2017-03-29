@@ -1,0 +1,190 @@
+{% extends 'homemain.html' %}
+{% load staticfiles %}
+
+
+{% block sidebar %}
+{% endblock %}
+
+{% block breadcrumb_zone %}
+{% endblock %}
+
+{% block settingsbox %}
+{% endblock %}
+
+{% block content %}
+
+    {% if rmetodo == 'GET' %}
+    <div class="row" style="margin-top: 15%">
+
+            <!-- p>{{ rmetodo }}</p -->
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <form action="" method="POST" class="align-middle">
+                {% csrf_token %}
+                {{ dependencias }}
+                <div class="space-10"></div>
+                <input type="submit" class="btn btn-primary btn-block radius-4">
+                </input>
+            </form>
+        </div>
+    </div>
+    {% elif rmetodo == 'POST' %}
+        <h3>Datos de Padrón de Poblaciones <br/></h3>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Municipio</th>
+                            <th>Programa 1</th>
+                            <th class="hidden-480">Programa 2</th>
+
+                            <th>
+                                <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                                Programa 3
+                            </th>
+                            <th class="hidden-480">Programa 4</th>
+
+                            <th>Programa 5</th>
+
+                            <th>Programa 6</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="#">Balancán</a>
+                            </td>
+                            <td>045</td>
+                            <td>045</td>
+                            <td class="hidden-480">0</td>
+                            <td>10</td>
+
+                            <td class="hidden-480">
+                                0
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <a href="#">Cárdenas</a>
+                            </td>
+                            <td>0</td>
+                            <td class="hidden-480">10</td>
+                            <td>18</td>
+                            <td>045</td>
+
+                            <td class="hidden-480">
+                                0
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <a href="#">Centro</a>
+                            </td>
+                            <td>0</td>
+                            <td class="hidden-480">10</td>
+                            <td>18</td>
+
+                            <td class="hidden-480">
+                                0
+                            </td>
+                            <td>045</td>
+                            <td>
+                                0
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <a href="#">Centla</a>
+                            </td>
+                            <td>0</td>
+                            <td class="hidden-480">10</td>
+                            <td>4</td>
+                            <td>18</td>
+
+                            <td class="hidden-480">
+                                0
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <a href="#">Comalcalco</a>
+                            </td>
+                            <td>0</td>
+                            <td class="hidden-480">10</td>
+                            <td>18</td>
+
+                            <td class="hidden-480">
+                                0
+                            </td>
+                            <td>15</td>
+                            <td>
+                                0
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <a href="#">Cunduacán</a>
+                            </td>
+                            <td>0</td>
+
+                            <td>25</td>
+                            <td class="hidden-480">10</td>
+                            <td>18</td>
+
+                            <td class="hidden-480">
+                                0
+                            </td>
+
+                            <td>
+                                0
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div><!-- /.span -->
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}
+
+<!-- inline scripts related to this page -->
+{% block inlinescripts %}
+    <script src="{% static "assets/js/dataTables/jquery.dataTables.js" %}"></script>
+    <script src="{% static "assets/js/dataTables/jquery.dataTables.bootstrap.js" %}"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $('#tablaDatos').DataTable();
+        });
+    </script>
+
+
+{% endblock %}

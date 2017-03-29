@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{#% block head_printstuff %#}
+{#% endblock %#}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block breadcrumb_zone %}
+{% endblock %}
+
+{% block settingsbox %}
+{% endblock %}
+
+{% block content %}
+
+<div class="col-xs-12 col-lg-6 middle">
+
+  <div class="well well-lg">
+
+      {% if nuevoTrabajo.errors %}
+        <p>{{ nuevoTrabajo.errors }}</p>
+      {% endif %}
+
+     <h2 class="center"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Registrar un padrón</h2>
+
+      <form enctype="multipart/form-data" method="post" action="{% url 'home' %}">
+          {% csrf_token %}
+          <label for="id_AnioEjercicio">Año: </label>
+          {{   nuevoTrabajo.AnioEjercicio }}
+          <div class="space-6"></div>
+          <label for="id_Trimestre">Trimestre: </label>
+          {{  nuevoTrabajo.Trimestre }}
+          <div class="space-6"></div>
+          <label for="id_TipoPadron">Tipo de Padrón: </label>
+          {{  nuevoTrabajo.TipoPadron }}
+          <div class="space-6"></div>
+          <div class="space-18"></div>
+
+          {{ nuevoTrabajo.Usuario }}
+          {{ nuevoTrabajo.Etapa }}
+
+          <div class="clearfix center">
+          <button type="submit" class="width-45 pull-center btn btn-app btn-primary">
+              <i class="ace-icon fa fa-pencil-square-o fa-2x"></i>
+              <span class="bigger-110">Iniciar trabajo</span>
+          </button>
+          </div>
+
+     </form>
+  </div>
+
+</div>
+
+
+{% if total_pendientes > 0  %}
+<div class="col-xs-12 col-lg-6 middle">
+  <div class="well well-lg">
+  <h2 class="center"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Tareas en proceso</h2>
+    {% for record in pendientes %}
+        <div class="renglon">
+            <div class="datos">
+            <a href="validar/{{ record.pk }}">{{ record.archivoRelacionado.name }}
+                <strong>Ejercicio: </strong> {{ record.AnioEjercicio }} | <strong>Trimestre: </strong>{{ record.Trimestre.identPeriodo }} | <strong>Tipo de Padrón: </strong>{{ record.TipoPadron.nombrePadron }} | <strong>Cantidad de Registros: </strong>{{ record.CantidadRegistros}} | <strong>Última actualización: </strong>{{ record.UltimaActualizacion|date:"SHORT_DATE_FORMAT" }}
+            </a>
+            </div>
+            <!-- div class="botones hidden-sm hidden-xs btn-group" -->
+            <div class="botones">
+            {% if record.Etapa_id == 3 %}
+                <!-- Etapa de Captura -->
+                <span class="label label-warning">
+			        <strong>Etapa: </strong>{{ record.Etapa }}
+			    </span>
+                <br />
+                <a href="validar/{{ record.pk }}" class="btn btn-xs btn-info" >
+                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </a>
+                <a  href="borrar/{{ record.pk }}" class="btn btn-xs btn-danger">
+                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                    </a>
+            {% elif record.Etapa_id == 4 %}
+                <!-- Etapa de Registro -->
+                <span class="label label-success">
+			        <strong>Etapa: </strong>{{ record.Etapa }}
+			    </span>
+                <br />
+                <button class="btn btn-xs btn-success">
+                    <i class="ace-icon fa fa-check bigger-120"></i>
+                </button>
+                <a href="validar/{{ record.pk }}" class="btn btn-xs btn-info">
+                        <i class="ace-icon fa fa-pencil bigger-120"></i>
+                </a>
+            {% elif record.Etapa_id == 5 %}
+                <!-- Etapa de Cierre -->
+                <span class="label label-inverse">
+			        <strong>Etapa: </strong>{{ record.Etapa }}
+			    </span>
+                <br />
+                <!--button class="btn btn-xs btn-inverse">
+                    Descargar Reporte
+                </button-->
+            {% else %}
+                <p>Error en la carga, intente nuevamente</p>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

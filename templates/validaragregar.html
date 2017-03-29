@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{#% block head_printstuff %#}
+{#% endblock %#}
+
+
+{% block sidebar %}
+{% endblock %}
+
+
+{#% block breadcrumb_zone %#}
+{#% endblock %#}
+
+
+{% block settingsbox %}
+{% endblock %}
+
+
+{% block content %}
+    <h2>Agregar registro de Padrón {{ trabajo.TipoPadron.nombrePadron }}</h2>
+    <br />
+
+
+    <form enctype="multipart/form-data" action="agregar" method="post" id="addpoblacionrecord">
+        {% csrf_token %}
+
+            {% if formulario.errors %}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="ace-icon fa fa-times"></i>
+                </button>
+
+                <strong>
+                    <i class="ace-icon fa fa-times"></i>
+                    ¡Error!
+                </strong>
+                Existen errores en el formulario, por favor corrigelos e intenta enviar nuevamente
+                <br>
+            </div>
+            {% endif %}
+
+            <div class="formulario">
+                {% for campo in formulario.visible_fields %}
+                    <!--li class="col-xs-4"-->
+                    <li>
+                        {% if campo.errors %}
+                            {{ campo.errors }}
+                        {% endif %}
+                        {{ campo.label_tag }}
+                        {{ campo }}
+                    </li>
+                {% endfor %}
+                {% for hidden in formulario.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
+
+
+            </div>
+
+            <input type="submit" value="Guardar" class="btn btn-app btn-primary radius-4 align-center">
+            </input>
+
+    </form>
+    <div class="space-12"></div>
+{% endblock %}
+
+
+{% block inlinescripts %}
+
+    <script src="{% static "assets/js/dataTables/jquery.validate.js" %}"></script>
+    <script src="{% static "assets/js/dataTables/jquery.additional-methods.js" %}"></script>
+
+    <script type="application/javascript">
+    $('#addpoblacionrecord').validate({
+        errorElement: 'div',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        rules: {
+            CD_DEPENDENCIA: {
+            required: true
+            },
+            CD_INSTITUCION: {
+            required: true
+            },
+            CD_PADRON: {
+            required: true,
+            }
+        },
+
+        messages: {
+        email: {
+        required: "Please provide a valid email.",
+        email: "Please provide a valid email."
+        }
+        },
+
+        highlight: function (e) {
+        $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+        },
+
+        success: function (e) {
+        $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+        $(e).remove();
+        },
+
+        errorPlacement: function (error, element) {
+        error.insertAfter(element.parent());
+        }
+        });
+    </script>
+
+
+{% endblock %}

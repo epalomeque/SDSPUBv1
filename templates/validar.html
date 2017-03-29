@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{#% block head_printstuff %#}
+{#% endblock %#}
+
+{% block sidebar %}
+{% endblock %}
+
+{#% block breadcrumb_zone %#}
+{#% endblock %#}
+
+{% block settingsbox %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- Línea de infobox y boton de agregar -->
+        <div class="col-xs-12 center">
+            <!-- INFOBOX PADRON -->
+            {% if trabajo.Etapa_id == 3 %}
+            <div class="infobox infobox-blue infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 4 %}
+            <div class="infobox infobox-green2 infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 5 %}
+            <div class="infobox infobox-grey infobox-small infobox-dark">
+            {% endif %}
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-book"> </i>
+                </div>
+                <div class="infobox-data">
+                    <div class="infobox-content">{{ trabajo.TipoPadron.nombrePadron }}</div>
+                    <div class="infobox-content">PADRÓN</div>
+                </div>
+            </div>
+
+            <!-- INFOBOX EJERCICIO -->
+            {% if trabajo.Etapa_id == 3 %}
+            <div class="infobox infobox-blue infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 4 %}
+            <div class="infobox infobox-green2 infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 5 %}
+            <div class="infobox infobox-grey infobox-small infobox-dark">
+            {% endif %}
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-calendar"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <div class="infobox-content">{{ trabajo.AnioEjercicio }}</div>
+                    <div class="infobox-content">EJERCICIO</div>
+                </div>
+            </div>
+
+            <!-- INFOBOX TRIMESTRE -->
+            {% if trabajo.Etapa_id == 3 %}
+            <div class="infobox infobox-blue infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 4 %}
+            <div class="infobox infobox-green2 infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 5 %}
+            <div class="infobox infobox-grey infobox-small infobox-dark">
+            {% endif %}
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-clock-o"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <div class="infobox-content">{{ trabajo.Trimestre.identPeriodo }}</div>
+                    <div class="infobox-content">TRIMESTRE</div>
+                </div>
+            </div>
+
+            <!-- INFOBOX ETAPA -->
+            {% if trabajo.Etapa_id == 3 %}
+            <div class="infobox infobox-blue infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 4 %}
+            <div class="infobox infobox-green2 infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 5 %}
+            <div class="infobox infobox-grey infobox-small infobox-dark">
+            {% endif %}
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-sort-numeric-asc "></i>
+                </div>
+
+                <div class="infobox-data">
+                    <div class="infobox-content">{{ trabajo.Etapa }}</div>
+                    <div class="infobox-content">ETAPA</div>
+                </div>
+            </div>
+
+            <!-- INFOBOX REGISTROS -->
+            {% if trabajo.Etapa_id == 3 %}
+            <div class="infobox infobox-blue infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 4 %}
+            <div class="infobox infobox-green2 infobox-small infobox-dark">
+            {% elif trabajo.Etapa_id == 5 %}
+            <div class="infobox infobox-grey infobox-small infobox-dark">
+            {% endif %}
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-database"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <div class="infobox-content">{{ trabajo.CantidadRegistros }}</div>
+                    <div class="infobox-content">REGISTROS</div>
+                </div>
+            </div>
+
+            <!-- BOTON AGREGAR REGISTRO -->
+            {% if trabajo.Etapa_id == 3  %}
+            <div class="btn-group">
+                <a href="{{ trabajo.pk }}/agregar" class="btn btn-app btn-primary btn-xs">
+                    <i class="ace-icon fa fa-plus bigger-175"></i>
+                    Agregar
+                </a>
+
+                <button data-toggle="dropdown" class="btn btn-app btn-primary btn-xs dropdown-toggle" aria-expanded="false">
+                    <span class="bigger-110 ace-icon fa fa-caret-down icon-only"></span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-primary">
+                    <li><a href="{{ trabajo.pk }}/agregar">Agregar Registro</a></li>
+                    <li><a href="{{ trabajo.pk }}/irarevision">Enviar a Revisión</a></li>
+                </ul>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="space-12"></div>
+    <div class="row">
+        <!-- Tabla de contenido -->
+        <div class="col-xs-12">
+            <div class="tabla">
+            {# Etapa es Llenado #}
+            {% if trabajo.Etapa_id == 3 or trabajo.Etapa_id == 4  %}
+                {% for record in registros %}
+                    <li class="col-xs-6"><a href="{{ trabajo.pk }}/idr/{{ record.pk }}">{{ record }}</a> </li>
+                {% endfor %}
+            {# Etapa es Registro #}
+            {#% elif  trabajo.Etapa_id == 4 %#}
+                {#% if trabajo.TipoPadron_id == 1 %#}
+                    {#% include 'tabla_actor.html' %#}
+                {#% elif trabajo.TipoPadron_id == 2 %#}
+                    {#% include 'tabla_personas.html' %#}
+                {#% elif trabajo.TipoPadron_id == 3 %#}
+                    {#% include 'tabla_poblacion_completo.html' %#}
+                {#% else %#}
+                    <!--p>Hubo un error al elegir el tipo de padron</p-->
+                {#% endif %#}
+            {# Etapa es Cierre #}
+            {% elif  trabajo.Etapa_id == 5 %}
+                <div class="row">
+                    <div class="col-xs-12 center">
+                        <h3><strong>Identificador del trabajo:</strong><br /> {{ trabajo.pk }}</h3>
+                        <h4><strong>Dependencia a la que pertenece:</strong><br /> {{ trabajo.Usuario.enlace.unidadAdministrativa.NB_DEPEN_CORTO }}</h4>
+                        <h4><strong>Persona que lo envia:</strong><br /> {{ trabajo.Usuario.first_name }} {{ trabajo.Usuario.last_name}}</h4>
+                        <h4><strong>Fecha de envio:</strong><br /> {{ trabajo.UltimaActualizacion }}</h4>
+                    </div>
+                </div>
+            {# Estatus es INICIADO #}
+            {% else %}
+                <p>Hubo un error al iniciar el proceso, por favor intentelo nuevamente</p>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block inlinescripts %}
+
+{% endblock %}
