@@ -39,7 +39,7 @@ def municipios_json(request):
     # NO_MUN = models.CharField(max_length=255)
     # CVE_ENT = models.ForeignKey(C_ENTIDAD)
 
-    return JsonResponse(lohmunicipioh_json)
+    return JsonResponse(lohmunicipioh_json, safe=False)
 
 # Create your views here.
 def homemain(request):
