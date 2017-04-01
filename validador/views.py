@@ -1,24 +1,45 @@
 # -*- coding: utf-8 -*-
-# from django.shortcuts import render
+from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseRedirect, HttpResponse
-
+from django.http import JsonResponse
+from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from models import  TrabajosRealizados, \
-                    EstructuraPoblacion, \
-                    EstructuraActorSocial, \
-                    EstructuraPersonas, \
-                    EtapasTrabajos, \
-                    C_MUNICIPIO, \
-                    C_DEPENDENCIA, \
-                    C_PROGRAMA_DGTIC
+from django.http.response import HttpResponseRedirect, HttpResponse
+from models import TrabajosRealizados, \
+                   EstructuraPoblacion, \
+                   EstructuraActorSocial, \
+                   EstructuraPersonas, \
+                   EtapasTrabajos, \
+                   C_MUNICIPIO, \
+                   C_DEPENDENCIA, \
+                   C_ENTIDAD, \
+                   C_PROGRAMA_DGTIC
 from validador.forms import nuevoTrabajoForm, nuevoRegistroActorSocial, nuevoRegistroPersona, nuevoRegistroPoblacion, selectDependenciaPoblacion
 
+
+def municipios_json(request):
+    lohmunicipioh = C_MUNICIPIO.objects.filter(CVE_ENT=27)
+    print '-----------'
+    print 'Queryset : '
+    print lohmunicipioh
+
+    lohmunicipioh_json = serializers.serialize('json', lohmunicipioh, fields=('CV_MUN','NO_MUN'))
+    print '-----------'
+    print 'JSON : '
+    print lohmunicipioh_json
+    print lohmunicipioh_json
+
+    # muni = lohmunicipioh.values_list()
+    # CV_MUN = models.CharField(max_length=3)
+    # NO_MUN = models.CharField(max_length=255)
+    # CVE_ENT = models.ForeignKey(C_ENTIDAD)
+
+    return JsonResponse(lohmunicipioh_json)
 
 # Create your views here.
 def homemain(request):
@@ -85,7 +106,7 @@ def showpobdependencia(request, dependencia_id):
         #'unidadAdmin': UAdmin,
         #'poblacion': poblacion,
         #'municipios': municipios,
-        'dependencia': dependencia,
+        'dependencia': nombredependencia,
         #'programas': programas,
         #'dependencia': dependencia
     }

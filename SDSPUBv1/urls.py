@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^validador/logout$', logout, {'next_page': '/validador'}, name='logout'),
     url(r'^validador/noautorizado$', views.no_autorizado, name='no_autorizado'),
     url(r'^validador/borrar/(?P<trabajo_id>[0-9]+)$', views.borrar, name="borrar"),
+    url(r'^lohmunicipioh$', views.municipios_json, name="lohmunicipioh"),
 ]

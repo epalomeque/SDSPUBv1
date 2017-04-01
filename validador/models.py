@@ -151,12 +151,12 @@ class C_MUNICIPIO(models.Model):
 
 
 class C_LOCALIDAD(models.Model):
-    CV_LOC = models.CharField(max_length=4)
+    CV_LOC = models.IntegerField()
     NO_LOC = models.CharField(max_length=255)
     CVE_MUN = models.ForeignKey(C_MUNICIPIO)
 
     def __unicode__(self):
-        return '%s' % (self.NO_LOC)
+        return '%s | %s | %s' % (self.CVE_MUN_id, self.CV_LOC, self.NO_LOC)
 
 
 # Catálogo de Programa Social (PB) AP.
@@ -353,8 +353,6 @@ class C_PARENTESCO(models.Model):
 # Tipos de beneficios, de acuerdo con la forma en que los otorgan los programas (PF, AS).
 # Nota: Los tipos de beneficio que no tienen indicación como "Rexpedición" o "Extemporáneo"
 # se refiere a emisiones normales de recursos para apoyos.
-
-
 class C_TP_BENEFICIO(models.Model):
     CD_TP_BENEFICIO = models.IntegerField()
     NB_TP_BENEFICIO = models.CharField(max_length=60)
@@ -373,6 +371,7 @@ class C_TP_BEN_DET(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.NB_TP_BEN_DET)
+
 
 # Catálogo de beneficios entregados a personas (PF).
 class C_BENEFICIO(models.Model):
@@ -466,6 +465,7 @@ class C_TP_BEN_DET_PROG(models.Model):
 
     def __unicode__(self):
         return '%s | %s' % (self.CD_TP_BEN_DET, self.NB_TP_BEN_DET)
+
 
 # Catálogo de códigos de beneficio de Actor Social utilizados por Programa.  (AS)
 class C_BENEFICIO_AS_PROG(models.Model):
@@ -603,7 +603,6 @@ class EstructuraPersonas(models.Model):
                                   default='',
                                   verbose_name='Padrón')
     CD_INTRAPROGRAMA = models.ForeignKey('C_INTRAPROGRAMAS',
-                                         blank=True,
                                          verbose_name='Clave del Subprograma')
     NB_SUBPROGRAMA = models.CharField(max_length=60,
                                       default='',

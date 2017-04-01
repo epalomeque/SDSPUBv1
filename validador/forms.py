@@ -27,8 +27,27 @@ class nuevoRegistroPersona(ModelForm):
     class Meta:
         model = EstructuraPersonas
         fields = '__all__'
+        error_messages = {
+            'ID_HOGAR': {'required': 'Este campo es obligatorio'},
+            'ID_CUIS_PS': {'required': 'Este campo es obligatorio'},
+            'ID_CUIS_SEDESOL': {'required': 'Este campo es obligatorio'},
+            'FH_LEVANTAMIENTO': {'required': 'Este campo es obligatorio'},
+            'ID_PERSONA': {'required': 'Este campo es obligatorio'},
+            'NB_PRIMER_AP': {'required': 'Este campo es obligatorio'},
+            'NB_SEGUNDO_AP': {'required': 'Este campo es obligatorio'},
+            'NB_NOMBRE': {'required': 'Este campo es obligatorio'},
+            'FH_NACIMIENTO': {'required': 'Este campo es obligatorio'},
+            'FH_ALTA': {'required': 'Este campo es obligatorio'},
+        }
         widgets = {
+            'ID_HOGAR': forms.TextInput(attrs={'placeholder': '0000'}),
+            'ID_CUIS_PS': forms.TextInput(attrs={'placeholder': '0000'}),
+            'ID_CUIS_SEDESOL': forms.TextInput(attrs={'placeholder': '0000'}),
             'FH_LEVANTAMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}),
+            'ID_PERSONA': forms.TextInput(attrs={'placeholder': '0000'}),
+            'NB_PRIMER_AP': forms.TextInput(attrs={'placeholder': 'Apellido Paterno'}),
+            'NB_SEGUNDO_AP': forms.TextInput(attrs={'placeholder': 'Apellido Materno'}),
+            'NB_NOMBRE': forms.TextInput(attrs={'placeholder': 'Nombre(s)'}),
             'FH_NACIMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}),
             'FH_ALTA': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}),
             'trabajo': forms.HiddenInput
@@ -51,10 +70,6 @@ class nuevoRegistroPoblacion (ModelForm):
     class Meta:
         model = EstructuraPoblacion
         fields = '__all__'
-        help_texts = {
-            'CD_DEPENDENCIA': ('Some useful help text.'),
-            'CD_INSTITUCION': ('Some useful help text.')
-        }
         error_messages = {
             'CD_DEPENDENCIA': {'required': 'Este campo es obligatorio'},
             'CD_INSTITUCION': {'required': 'Este campo es obligatorio'},

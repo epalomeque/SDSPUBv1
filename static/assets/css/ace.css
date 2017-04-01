@@ -20077,6 +20077,9 @@ div.tabla li:hover {
 ul.errorlist {
   color: red;
   background-color: bisque;
+  margin-left: 0px;
+  margin-bottom: 2px;
+  padding-left: 3px;
 }
 
 ul.errorlist li {

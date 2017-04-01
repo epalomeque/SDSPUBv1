@@ -23,7 +23,7 @@
     <br />
 
 
-    <form enctype="multipart/form-data" action="agregar" method="post" id="addpoblacionrecord">
+    <form enctype="multipart/form-data" action="agregar" method="post" id="addrecord">
         {% csrf_token %}
 
             {% if formulario.errors %}
@@ -45,10 +45,10 @@
                 {% for campo in formulario.visible_fields %}
                     <!--li class="col-xs-4"-->
                     <li>
+                        {{ campo.label_tag }}
                         {% if campo.errors %}
                             {{ campo.errors }}
                         {% endif %}
-                        {{ campo.label_tag }}
                         {{ campo }}
                     </li>
                 {% endfor %}
@@ -73,7 +73,7 @@
     <script src="{% static "assets/js/dataTables/jquery.additional-methods.js" %}"></script>
 
     <script type="application/javascript">
-    $('#addpoblacionrecord').validate({
+    $('#addrecord').validate({
         errorElement: 'div',
         errorClass: 'help-block',
         focusInvalid: false,
