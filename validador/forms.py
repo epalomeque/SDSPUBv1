@@ -5,9 +5,20 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.forms.extras import SelectDateWidget
-from validador.models import TrabajosRealizados, EstructuraActorSocial, EstructuraPersonas, EstructuraPoblacion, C_DEPENDENCIA
+from validador.models import TrabajosRealizados, \
+    EstructuraActorSocial, \
+    EstructuraPersonas, \
+    EstructuraPoblacion, \
+    C_DEPENDENCIA, \
+    C_MUNICIPIO
+
+
 # from consultaCatalogos.models import *
 import os.path
+
+
+CAT_MUNICIPIOS = C_MUNICIPIO.objects.filter(CVE_ENT = 27).values_list()
+print CAT_MUNICIPIOS
 
 
 class nuevoTrabajoForm(ModelForm):
@@ -40,16 +51,18 @@ class nuevoRegistroPersona(ModelForm):
             'FH_ALTA': {'required': 'Este campo es obligatorio'},
         }
         widgets = {
-            'ID_HOGAR': forms.TextInput(attrs={'placeholder': '0000'}),
+            'ID_HOGAR': forms.TextInput(attrs={'placeholder': '0000','required': True}),
             'ID_CUIS_PS': forms.TextInput(attrs={'placeholder': '0000'}),
             'ID_CUIS_SEDESOL': forms.TextInput(attrs={'placeholder': '0000'}),
-            'FH_LEVANTAMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}),
+            'FH_LEVANTAMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:80px', 'required': True}),
+            # 'FH_LEVANTAMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}, ),
             'ID_PERSONA': forms.TextInput(attrs={'placeholder': '0000'}),
             'NB_PRIMER_AP': forms.TextInput(attrs={'placeholder': 'Apellido Paterno'}),
             'NB_SEGUNDO_AP': forms.TextInput(attrs={'placeholder': 'Apellido Materno'}),
             'NB_NOMBRE': forms.TextInput(attrs={'placeholder': 'Nombre(s)'}),
-            'FH_NACIMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}),
-            'FH_ALTA': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}),
+            'FH_NACIMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:80px'}),
+            'FH_ALTA': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:80px'}),
+            'CD_MUN_PAGO': forms.Select(),
             'trabajo': forms.HiddenInput
         }
 
@@ -139,3 +152,8 @@ class selectDependenciaPoblacion(forms.Form):
                                          label= 'Selecciona la dependencia',
                                          widget=forms.Select(attrs={'style':'width:100%'})
                                          )
+
+
+class selectlocalidad(forms.Form):
+    municipio = forms.ModelChoiceField(queryset=C_MUNICIPIO.objects.filter(CVE_ENT=27))
+    localidad = forms.ChoiceField()

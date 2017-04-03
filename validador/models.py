@@ -75,7 +75,8 @@ class C_DEPENDENCIA(models.Model):
     NB_ORIGEN = models.CharField(max_length=12, choices=NBORIG_CHOICES)
     CD_DEPENDENCIA = models.IntegerField()
     CD_DEPENDENCIA_OFICAL = models.IntegerField()
-    ID_ADMIN = models.CharField(max_length=2, blank=True) #models.ForeignKey('C_ADMIN', blank=True)
+    # ID_ADMIN = models.CharField(max_length=2, blank=True)
+    ID_ADMIN = models.ForeignKey('C_ADMIN', blank=True)
     NB_DEPENDENCIA = models.CharField(max_length=150, default="")
     NB_DEPEN_CORTO = models.CharField(max_length=15)
     SECTOR = models.CharField(max_length=25)
@@ -140,6 +141,11 @@ class C_ENTIDAD(models.Model):
     def __unicode__(self):
         return '%s | %s' % ( self.CD_ENT, self.NB_ENTIDAD )
 
+    def as_dict(self):
+        return {
+            "cd_ent": self.CD_ENT,
+            "nb_entidad": self.NB_ENTIDAD
+        }
 
 class C_MUNICIPIO(models.Model):
     CV_MUN = models.CharField(max_length=3)
@@ -149,6 +155,13 @@ class C_MUNICIPIO(models.Model):
     def __unicode__(self):
         return '%s | %s ' % (self.CVE_ENT.NB_ENT, self.NO_MUN)
 
+    def as_dict(self):
+        return {
+            "cv_mun": self.CV_MUN,
+            "no_mun": self.NO_MUN,
+            "cve_ent": self.CVE_ENT
+        }
+
 
 class C_LOCALIDAD(models.Model):
     CV_LOC = models.IntegerField()
@@ -157,6 +170,12 @@ class C_LOCALIDAD(models.Model):
 
     def __unicode__(self):
         return '%s | %s | %s' % (self.CVE_MUN_id, self.CV_LOC, self.NO_LOC)
+
+    def as_dict(self):
+        return {
+            "cv_loc": self.CV_LOC,
+            "no_loc": self.NO_LOC
+        }
 
 
 # Catálogo de Programa Social (PB) AP.
@@ -367,7 +386,7 @@ class C_TP_BENEFICIO(models.Model):
 class C_TP_BEN_DET(models.Model):
     CD_TP_BEN_DET = models.IntegerField()
     NB_TP_BEN_DET = models.CharField(max_length=120)
-    SEUSAEN = models.CharField(max_length=200)
+    # SEUSAEN = models.CharField(max_length=200)
 
     def __unicode__(self):
         return '%s' % (self.NB_TP_BEN_DET)
@@ -475,7 +494,7 @@ class C_BENEFICIO_AS_PROG(models.Model):
     CD_PROG_DGGPB = models.CharField(max_length=60)
 
     def __unicode__(self):
-        return '%s | %s' % (self.CD_BENEFICIO_AS, self.NB_BENEFICIO_AS)
+        return '%s | %s | %s' % (self.CD_BENEFICIO_AS, self.ANIO, self.NB_BENEFICIO_AS)
 
 
 # Catálogo de códigos de beneficio de Obras y Servicios utilizados por Programa.  (PB)
@@ -617,6 +636,8 @@ class EstructuraPersonas(models.Model):
                                     related_name='cdentpago',
                                     verbose_name='Entidad Federativa de pago')
     CD_MUN_PAGO = models.ForeignKey('C_MUNICIPIO',
+                                    # queryset= C_MUNICIPIO.objects.filter(CVE_ENT = 27),
+                                    # choices=CAT_MUNICIPIOS,
                                     related_name='cdmunpago',
                                     verbose_name='Municipio de pago')
     CD_LOC_PAGO = models.ForeignKey('C_LOCALIDAD',

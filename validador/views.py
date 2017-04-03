@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -23,23 +24,22 @@ from validador.forms import nuevoTrabajoForm, nuevoRegistroActorSocial, nuevoReg
 
 
 def municipios_json(request):
-    lohmunicipioh = C_MUNICIPIO.objects.filter(CVE_ENT=27)
+    lohmunicipioh = list(C_MUNICIPIO.objects.filter(CVE_ENT=27).values('CV_MUN', 'NO_MUN', 'CVE_ENT'))
     print '-----------'
     print 'Queryset : '
     print lohmunicipioh
+    #muni = lohmunicipioh
+    #print muni
 
-    lohmunicipioh_json = serializers.serialize('json', lohmunicipioh, fields=('CV_MUN','NO_MUN'))
-    print '-----------'
-    print 'JSON : '
-    print lohmunicipioh_json
-    print lohmunicipioh_json
+    #lohmunicipioh_serializado = serializers.serialize('json', lohmunicipioh)
 
-    # muni = lohmunicipioh.values_list()
-    # CV_MUN = models.CharField(max_length=3)
-    # NO_MUN = models.CharField(max_length=255)
-    # CVE_ENT = models.ForeignKey(C_ENTIDAD)
+    #print '-----------'
+    #print 'JSON : '
+    #print lohmunicipioh_serializado
+    # muni = lohmunicipioh_serializado
 
-    return JsonResponse(lohmunicipioh_json, safe=False)
+
+    return HttpResponse(json.dumps(lohmunicipioh))
 
 # Create your views here.
 def homemain(request):
@@ -271,10 +271,10 @@ def validaragregar(request, trabajo_id):
 
     elif request.method == 'GET':
         if trabajo.TipoPadron_id == 1:
-            formulario = nuevoRegistroActorSocial( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk} )
+            formulario = nuevoRegistroActorSocial( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk } )
             print 'GET - Padron 1'
         elif trabajo.TipoPadron_id == 2:
-            formulario = nuevoRegistroPersona( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk} )
+            formulario = nuevoRegistroPersona( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk, 'CD_ENT_PAGO':27} )
             print 'GET - Padron 2'
         elif trabajo.TipoPadron_id == 3:
             formulario = nuevoRegistroPoblacion( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk} )
