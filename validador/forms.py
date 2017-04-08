@@ -55,7 +55,7 @@ class nuevoRegistroPersona(ModelForm):
             'ID_CUIS_PS': forms.TextInput(attrs={'placeholder': '0000'}),
             'ID_CUIS_SEDESOL': forms.TextInput(attrs={'placeholder': '0000'}),
             'FH_LEVANTAMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:80px', 'required': True}),
-            # 'FH_LEVANTAMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}, ),
+            # 'FH_LEVANTAMIENTO': forms.DateInput(attrs={'placeholder': 'aaaa-mm-dd'}, ),jkmj
             'ID_PERSONA': forms.TextInput(attrs={'placeholder': '0000'}),
             'NB_PRIMER_AP': forms.TextInput(attrs={'placeholder': 'Apellido Paterno'}),
             'NB_SEGUNDO_AP': forms.TextInput(attrs={'placeholder': 'Apellido Materno'}),
