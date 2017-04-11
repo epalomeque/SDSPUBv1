@@ -24,6 +24,12 @@ NBORIG_CHOICES = (
     ('PRIV', 'Privada'),
 )
 
+TP_BENEFICIARIO_CHOICES = (
+    ('', '------'),
+    ('AS','Actor Social'),
+    ('PF','Persona Física'),
+    ('PB','Población Beneficiaria'),
+)
 
 # Extendiendo el modelo de usuario
 class Enlace(models.Model):
@@ -31,43 +37,7 @@ class Enlace(models.Model):
     unidadAdministrativa = models.ForeignKey('C_DEPENDENCIA')
 
 
-# Catálogos
-
-# Tipo de Padrón
-class Cat_TipoPadron(models.Model):
-    nombrePadron = models.CharField(max_length=15)
-
-    def __unicode__(self):
-        return '%s | %s' % (self.pk, self.nombrePadron)
-
-
-# Año de ejercicio
-class Cat_AnioEjercicio(models.Model):
-    AnioEjercicio = models.CharField(max_length=4, default='')
-
-    def __unicode__(self):  # __str__ en Python 3
-        return self.AnioEjercicio
-
-
-# Catalogo de periodos
-class Cat_Periodos(models.Model):
-    identPeriodo = models.CharField(max_length=2)
-    nombrePeriodo = models.CharField(max_length=20)
-    # mes = models.ManyToManyField(Cat_Mes)
-
-    def __unicode__(self):
-        return '%s | %s' % (self.identPeriodo, self.nombrePeriodo)
-
-
-# Catálogo para identificar de que Estado proviene la información.
-class C_ADMIN(models.Model):
-    ID_ADMIN = models.IntegerField()
-    CD_ADMIN = models.IntegerField()
-    NB_ADMIN = models.CharField(max_length=60)
-    PERIODO = models.CharField(max_length=9)
-
-    def __unicode__(self):
-        return '%s | %s' % (self.ID_ADMIN, self.NB_ADMIN)
+# Catálogos Comunes ----------------------------------------------------------------------------------------------------
 
 
 # Catálogo de Dependencias (TODOS) SIIPPG.
@@ -89,14 +59,14 @@ class C_DEPENDENCIA(models.Model):
 # Catálogo de las unidades administrativa responsables de operar programas (TODOS).
 class C_UR(models.Model):
     CD_INSTITUCION = models.CharField(max_length=60)
-    CD_DEPENDENCIA = models.IntegerField()
+    CD_DEPENDENCIA = models.ForeignKey('C_DEPENDENCIA')
     CD_U_R = models.CharField(max_length=20)
     CD_U_R_OFICIAL = models.CharField(max_length=20)
-    ID_ADMIN = models.IntegerField()
+    ID_ADMIN = models.ForeignKey('C_ADMIN')
     NB_UR = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return '%s | %s | %s' % (self.CD_INSTITUCION, self.CD_DEPENDENCIA, self.CD_U_R)
+        return '%s | %s | %s' % (self.CD_INSTITUCION, self.CD_U_R, self.NB_UR)
 
 
 # Catálogo de tipos de subprograma  o proyecto que se genere de un programa (TODOS).
@@ -113,13 +83,74 @@ class C_INTRAPROGRAMAS(models.Model):
         return '%s | %s' % (self.CD_INTRAPROGRAMA, self.NB_INTRAPROGRAMA)
 
 
-# Catálogo del Tipo de vialidad (TODOS) INEGI.
-class C_TP_VIALIDAD(models.Model):
-    CD_TIPO_VIALIDAD = models.IntegerField()
-    NB_TIPO_VIALIDAD = models.CharField(max_length=60)
+# Catálogo de entidades de nacimiento (TODOS) INEGI, RENAPO.
+class C_ENTIDAD(models.Model):
+    CD_ENT = models.IntegerField()
+    NB_ENTIDAD = models.CharField(max_length=60)
+    CD_ENT_RENAPO = models.CharField(max_length=60)
+    NB_ENT = models.CharField(max_length=60)
 
     def __unicode__(self):
-        return '%s' % ( self.NB_TIPO_VIALIDAD )
+        return '%s | %s' % (self.CD_ENT, self.NB_ENTIDAD)
+
+    def as_dict(self):
+        return {
+            "cd_ent": self.CD_ENT,
+            "nb_entidad": self.NB_ENTIDAD
+        }
+
+
+# Catalogo de Metodo de Pago
+class C_MET_PAGO(models.Model):
+    NB_MET = models.CharField(max_length=25)
+
+    def __unicode__(self):
+        return '%s' % (self.NB_MET)
+
+
+# Catálogo de Programas de Desarrollo Social que aportan información
+# para la integración del Padrón Único de Beneficiarios (TODOS).
+class C_PROGRAMA(models.Model):
+    CD_PROGRAMA = models.CharField(max_length=10)
+    CD_PROG_OFICIAL = models.CharField(max_length=60)
+    ANIO = models.IntegerField()
+    CD_INSTITUCION = models.ForeignKey('C_UR')
+    CD_PROG_DGGPB = models.CharField(max_length=60)
+    NB_ORIGEN = models.CharField(max_length=60, choices=NBORIG_CHOICES)
+    TP_BENEFICIARIO = models.CharField(max_length=60, choices=TP_BENEFICIARIO_CHOICES)
+    NB_PROGRAMA = models.CharField(max_length=255)
+    CVE_SUBP1 = models.IntegerField()
+    NB_SUBP1 = models.CharField(max_length=150)
+    NB_SUBP2 = models.CharField(max_length=150)
+    NB_PROG = models.CharField(max_length=255)
+
+    # NB_RUTA = models.CharField(max_length=60)
+    # NB_RESP = models.CharField(max_length=60)
+    # CD_DEPENDENCIA = models.IntegerField()
+    # ID_ADMIN = models.IntegerField()
+    # NB_DEP = models.CharField(max_length=60)
+    # LAST = models.CharField(max_length=60)
+    # USER
+    # SAPUB = models.CharField(max_length=60)
+    # CNcH = models.IntegerField()
+    # FH_ACT = models.IntegerField()
+    def __unicode__(self):
+        return '%s' % (self.NB_PROGRAMA)
+
+
+#
+class C_PADRON(models.Model):
+    CD_PROGRAMA = models.ForeignKey('C_PROGRAMA')
+    CD_PADRON = models.IntegerField()
+    ANIO = models.IntegerField()
+    CD_INSTITUCION = models.ForeignKey('C_UR')
+    TP_BENEFICIARIO = models.CharField(choices=TP_BENEFICIARIO_CHOICES, max_length=2)
+    NB_PROGRAMA = models.CharField(max_length=255)
+    NB_SUBP1 = models.CharField(max_length=255, blank=True)
+    CD_DEPENDENCIA = models.ForeignKey('C_DEPENDENCIA')
+
+    def __unicode__(self):
+        return '%s' % (self.NB_PROGRAMA)
 
 
 # Catálogo del Tipo de asentamiento humano (TODOS) INEGI.
@@ -131,21 +162,42 @@ class C_TP_ASENTAMIENTO(models.Model):
         return '%s' % (self.NB_TIPO_ASENTAMIENTO)
 
 
-# Catálogo de entidades de nacimiento (TODOS) INEGI, RENAPO.
-class C_ENTIDAD(models.Model):
-    CD_ENT = models.IntegerField()
-    NB_ENTIDAD = models.CharField(max_length=60)
-    CD_ENT_RENAPO = models.CharField(max_length=60)
-    NB_ENT = models.CharField(max_length=60)
+# Tipos de beneficios, de acuerdo con la forma en que los otorgan los programas (PF, AS).
+# Nota: Los tipos de beneficio que no tienen indicación como "Rexpedición" o "Extemporáneo"
+# se refiere a emisiones normales de recursos para apoyos.
+class C_TP_BENEFICIO(models.Model):
+    CD_TP_BENEFICIO = models.IntegerField()
+    NB_TP_BENEFICIO = models.CharField(max_length=60)
+    SEUSAEN = models.CharField(max_length=60, blank=True)
 
     def __unicode__(self):
-        return '%s | %s' % ( self.CD_ENT, self.NB_ENTIDAD )
+        return '%s' % (self.NB_TP_BENEFICIO)
 
-    def as_dict(self):
-        return {
-            "cd_ent": self.CD_ENT,
-            "nb_entidad": self.NB_ENTIDAD
-        }
+
+# Catálogo del Tipo de vialidad (TODOS) INEGI.
+class C_TP_VIALIDAD(models.Model):
+    CD_TIPO_VIALIDAD = models.IntegerField()
+    NB_TIPO_VIALIDAD = models.CharField(max_length=60)
+
+    def __unicode__(self):
+        return '%s' % (self.NB_TIPO_VIALIDAD)
+
+
+# Catalogos Actor Social -----------------------------------------------------------------------------------------------
+# Catalogos Persona Fisica ---------------------------------------------------------------------------------------------
+# Catalogos Poblacion Beneficiaria -------------------------------------------------------------------------------------
+
+
+# Catálogo para identificar de que Estado proviene la información.
+class C_ADMIN(models.Model):
+    ID_ADMIN = models.IntegerField()
+    CD_ADMIN = models.IntegerField()
+    NB_ADMIN = models.CharField(max_length=60)
+    PERIODO = models.CharField(max_length=9)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.ID_ADMIN, self.NB_ADMIN)
+
 
 class C_MUNICIPIO(models.Model):
     CV_MUN = models.CharField(max_length=3)
@@ -369,18 +421,6 @@ class C_PARENTESCO(models.Model):
         return '%s'%(self.NB_PARENTESCO)
 
 
-# Tipos de beneficios, de acuerdo con la forma en que los otorgan los programas (PF, AS).
-# Nota: Los tipos de beneficio que no tienen indicación como "Rexpedición" o "Extemporáneo"
-# se refiere a emisiones normales de recursos para apoyos.
-class C_TP_BENEFICIO(models.Model):
-    CD_TP_BENEFICIO = models.IntegerField()
-    NB_TP_BENEFICIO = models.CharField(max_length=60)
-    SEUSAEN = models.CharField(max_length=60, blank=True)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_TP_BENEFICIO)
-
-
 # Catálogo de tipos de beneficiario, relacionados a los motivos por los cuales los programas
 # asignan beneficios a las personas (PF).
 class C_TP_BEN_DET(models.Model):
@@ -409,35 +449,6 @@ class C_CORRESP(models.Model):
 
     def __unicode__(self):
         return '%s'%(self.NB_CORRESP)
-
-
-# Catálogo de Programas de Desarrollo Social que aportan información
-# para la integración del Padrón Único de Beneficiarios (TODOS).
-class C_PROGRAMA(models.Model):
-    CD_PROGRAMA = models.CharField(max_length=10)
-    CD_PROG_OFICIAL = models.CharField(max_length=60)
-    ANIO = models.IntegerField()
-    CD_INSTITUCION = models.CharField(max_length=60)
-    CD_PROG_DGGPB = models.CharField(max_length=60)
-    NB_ORIGEN = models.CharField(max_length=60)
-    TP_BENEFICIARIO = models.CharField(max_length=60)
-    NB_PROGRAMA = models.CharField(max_length=150)
-    CVE_SUBP1 = models.IntegerField()
-    NB_SUBP1 = models.CharField(max_length=150)
-    NB_SUBP2 = models.CharField(max_length=150)
-    NB_PROG = models.CharField(max_length=150)
-    # NB_RUTA = models.CharField(max_length=60)
-    # NB_RESP = models.CharField(max_length=60)
-    # CD_DEPENDENCIA = models.IntegerField()
-    # ID_ADMIN = models.IntegerField()
-    # NB_DEP = models.CharField(max_length=60)
-    # LAST = models.CharField(max_length=60)
-    # USER
-    # SAPUB = models.CharField(max_length=60)
-    # CNcH = models.IntegerField()
-    # FH_ACT = models.IntegerField()
-    def __unicode__(self):
-        return '%s' % (self.NB_PROGRAMA)
 
 
 # Catálogo de Programas de Desarrollo Social que aportan información al Estado de Cuenta Social.
@@ -508,14 +519,6 @@ class C_BENEFICIO_OB_PROG(models.Model):
         return '%s'%(self.NB_BENEFICIO_OB)
 
 
-class C_PADRON(models.Model):
-    CV_PADRON = models.CharField(max_length=12)
-    NB_PADRON = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_PADRON)
-
-
 class C_ESTATUS_BEN(models.Model):
     NB_ESTATUS = models.CharField(max_length=25)
 
@@ -535,13 +538,6 @@ class C_TP_EXPEDICION(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.NB_TP)
-
-
-class C_MET_PAGO(models.Model):
-    NB_MET = models.CharField(max_length=25)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_MET)
 
 
 class C_CORRESPONSABILIDAD(models.Model):
@@ -615,18 +611,19 @@ class EstructuraPersonas(models.Model):
                                        verbose_name='Dependencia')
     CD_INSTITUCION = models.ForeignKey('C_UR',
                                        max_length=5,
-                                       default='',
+                                       default=None,
                                        verbose_name='Institución')
     CD_PADRON = models.ForeignKey('C_PADRON',
                                   max_length=4,
-                                  default='',
+                                  default=None,
                                   verbose_name='Padrón')
     CD_INTRAPROGRAMA = models.ForeignKey('C_INTRAPROGRAMAS',
-                                         verbose_name='Clave del Subprograma')
-    NB_SUBPROGRAMA = models.CharField(max_length=60,
-                                      default='',
-                                      blank=True,
-                                      verbose_name='Nombre del Subprograma')
+                                         default=None,
+                                         verbose_name='Clave/Nombre del Subprograma')
+    # NB_SUBPROGRAMA = models.CharField(max_length=60,
+    #                                   default='',
+    #                                   blank=True,
+    #                                   verbose_name='Nombre del Subprograma')
     FH_ALTA = models.DateField(verbose_name='Fecha de alta')
     CD_ESTATUS_BEN = models.ForeignKey('C_ESTATUS_BEN',
                                        verbose_name='Estatus del beneficiario')
@@ -1156,6 +1153,33 @@ class EstructuraPoblacion(models.Model):
             self.CD_PADRON,
             self.CVEPROGRAMA
         )
+
+
+# Catalogos de Sistema ----------------------------------------
+
+# Tipo de Padrón
+class Cat_TipoPadron(models.Model):
+    nombrePadron = models.CharField(max_length=15)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.pk, self.nombrePadron)
+
+# Año de ejercicio
+class Cat_AnioEjercicio(models.Model):
+    AnioEjercicio = models.CharField(max_length=4, default='')
+
+    def __unicode__(self):  # __str__ en Python 3
+        return self.AnioEjercicio
+
+# Catalogo de periodos
+class Cat_Periodos(models.Model):
+    identPeriodo = models.CharField(max_length=2)
+    nombrePeriodo = models.CharField(max_length=20)
+
+    # mes = models.ManyToManyField(Cat_Mes)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.identPeriodo, self.nombrePeriodo)
 
 
 # Modelo de trabajos realizados

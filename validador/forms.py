@@ -63,6 +63,7 @@ class nuevoRegistroPersona(ModelForm):
             'FH_NACIMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:80px'}),
             'FH_ALTA': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:80px'}),
             'CD_MUN_PAGO': forms.Select(),
+            'CD_DEPENDENCIA':forms.HiddenInput,
             'trabajo': forms.HiddenInput
         }
 
