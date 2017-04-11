@@ -31,6 +31,13 @@ TP_BENEFICIARIO_CHOICES = (
     ('PB','Población Beneficiaria'),
 )
 
+MESES = (
+    (1,'Enero'),      (2,'Febrero'),  (3,'Marzo'),      (4,'Abril'),
+    (5,'Mayo'),       (6,'Junio'),    (7,'Julio'),      (8,'Agosto'),
+    (9,'Septiembre'), (10,'Octubre'), (11,'Noviembre'), (12,'Diciembre')
+)
+
+
 # Extendiendo el modelo de usuario
 class Enlace(models.Model):
     user = models.OneToOneField(User)
@@ -184,7 +191,95 @@ class C_TP_VIALIDAD(models.Model):
 
 
 # Catalogos Actor Social -----------------------------------------------------------------------------------------------
+
+
 # Catalogos Persona Fisica ---------------------------------------------------------------------------------------------
+
+
+# Beneficios entregados a personas (PF).
+class C_BENEFICIO(models.Model):
+    CD_BENEFICIO = models.IntegerField()
+    NB_BENEFICIO = models.CharField(max_length=200)
+    ANIO = models.IntegerField()
+    SEUSAEN = models.CharField(max_length=150)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.CD_BENEFICIO, self.NB_BENEFICIO)
+
+
+# Indicador de corresponsabilidad (PF).
+class C_CORRESP(models.Model):
+    IN_CORRESP = models.IntegerField()
+    NB_CORRESP = models.CharField(max_length=60)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.IN_CORRESP, self.NB_CORRESP)
+
+
+# Estatus del Beneficiario
+class C_ESTATUS_BEN(models.Model):
+    CD_ESTATUS_BEN = models.IntegerField()
+    NB_ESTATUS = models.CharField(max_length=25)
+
+    def __unicode__(self):
+        return '%s| %s' % (self.CD_ESTATUS_BEN, self.NB_ESTATUS)
+
+
+# EStatus del Hogar
+class C_ESTATUS_HOG(models.Model):
+    NB_ESTATUS = models.CharField(max_length=25)
+
+    def __unicode__(self):
+        return '%s' % (self.NB_ESTATUS)
+
+
+# Estado Civil (PF).
+class C_EDO_CIVIL(models.Model):
+    CD_EDO_CIVIL = models.IntegerField()
+    NB_EDO_CIVIL = models.CharField(max_length=60)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.CD_EDO_CIVIL, self.NB_EDO_CIVIL)
+
+
+# Parentescos de los integrantes de los hogares con el jefe de familia (PF).
+class C_PARENTESCO(models.Model):
+    CD_PARENTESCO = models.IntegerField()
+    NB_PARENTESCO = models.CharField(max_length=60)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.CD_PARENTESCO, self.NB_PARENTESCO)
+
+
+# Tipos de beneficiario (PF). Para información anterior a 2012.
+class C_TP_BEN(models.Model):
+    CD_TP_BEN = models.CharField(max_length=60)
+    NB_TP_BEN = models.CharField(max_length=60)
+
+    def __unicode__(self):
+        return '%s' % (self.NB_TP_BEN)
+
+
+# Catálogo de tipos de beneficiario, relacionados a los motivos por los cuales los programas
+# asignan beneficios a las personas (PF).
+class C_TP_BEN_DET(models.Model):
+    CD_TP_BEN_DET = models.IntegerField()
+    NB_TP_BEN_DET = models.CharField(max_length=120)
+
+    # SEUSAEN = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.CD_TP_BEN_DET, self.NB_TP_BEN_DET)
+
+
+class C_TP_EXPEDICION(models.Model):
+    CD_TP_EXPEDICION = models.IntegerField()
+    NB_TP_EXPEDICION = models.CharField(max_length=25)
+
+    def __unicode__(self):
+        return '%s | %s' % (self.CD_TP_EXPEDICION, self.NB_TP_EXPEDICION)
+
+
 # Catalogos Poblacion Beneficiaria -------------------------------------------------------------------------------------
 
 
@@ -394,63 +489,6 @@ class C_BENEFICIO_AS(models.Model):
         return '%s' % (self.NB_BENEFICIO_AS)
 
 
-# Catálogo de tipos de beneficiario (PF). Para información anterior a 2012.
-class C_TP_BEN(models.Model):
-    CD_TP_BEN = models.CharField(max_length=60)
-    NB_TP_BEN = models.CharField(max_length=60)
-
-    def __unicode__(self):
-        return '%s'%(self.NB_TP_BEN)
-
-
-# Catálogo del estado Civil (PF).
-class C_EDO_CIVIL(models.Model):
-    CD_EDO_CIVIL = models.IntegerField()
-    NB_EDO_CIVIL = models.CharField(max_length=60)
-
-    def __unicode__(self):
-        return '%s'%(self.NB_EDO_CIVIL)
-
-
-# Catálogo de parentescos de los integrantes de los hogares con el jefe de familia (PF).
-class C_PARENTESCO(models.Model):
-    CD_PARENTESCO = models.IntegerField()
-    NB_PARENTESCO = models.CharField(max_length=60)
-
-    def __unicode__(self):
-        return '%s'%(self.NB_PARENTESCO)
-
-
-# Catálogo de tipos de beneficiario, relacionados a los motivos por los cuales los programas
-# asignan beneficios a las personas (PF).
-class C_TP_BEN_DET(models.Model):
-    CD_TP_BEN_DET = models.IntegerField()
-    NB_TP_BEN_DET = models.CharField(max_length=120)
-    # SEUSAEN = models.CharField(max_length=200)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_TP_BEN_DET)
-
-
-# Catálogo de beneficios entregados a personas (PF).
-class C_BENEFICIO(models.Model):
-    CD_BENEFICIO = models.IntegerField()
-    NB_BENEFICIO = models.CharField(max_length=200)
-    SEUSAEN = models.CharField(max_length=150)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_BENEFICIO)
-
-
-# Catálogo de indicador de corresponsabilidad (PF).
-class C_CORRESP(models.Model):
-    IN_CORRESP = models.IntegerField()
-    NB_CORRESP = models.CharField(max_length=60)
-
-    def __unicode__(self):
-        return '%s'%(self.NB_CORRESP)
-
-
 # Catálogo de Programas de Desarrollo Social que aportan información al Estado de Cuenta Social.
 class C_PERIODO(models.Model):
     CD_PROGRAMA = models.CharField(max_length=60)
@@ -519,27 +557,6 @@ class C_BENEFICIO_OB_PROG(models.Model):
         return '%s'%(self.NB_BENEFICIO_OB)
 
 
-class C_ESTATUS_BEN(models.Model):
-    NB_ESTATUS = models.CharField(max_length=25)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_ESTATUS)
-
-
-class C_ESTATUS_HOG(models.Model):
-    NB_ESTATUS = models.CharField(max_length=25)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_ESTATUS)
-
-
-class C_TP_EXPEDICION(models.Model):
-    NB_TP = models.CharField(max_length=25)
-
-    def __unicode__(self):
-        return '%s' % (self.NB_TP)
-
-
 class C_CORRESPONSABILIDAD(models.Model):
     NB_CORR = models.CharField(max_length=25)
 
@@ -561,7 +578,7 @@ class C_MANZANA(models.Model):
         return '%s' % (self.NB_MANZANA)
 
 
-# Modelos principales
+# Modelos principales --------------------------------------------------------------------------------------------------
 class EstructuraPersonas(models.Model):
     # ID_REGISTRO = models.CharField(max_length=40,default='')
     ID_HOGAR = models.CharField(max_length=30,
@@ -752,13 +769,16 @@ class EstructuraPersonas(models.Model):
                              verbose_name='Clave del Área Geográfica Estadística Básica')
     CLAVE_MZNA = models.ForeignKey('C_MANZANA',
                                    max_length=3,
-                                   default='',
+                                   default=None,
+                                   blank=True,
                                    verbose_name='Clave de manzana')
     LONGITUD = models.DecimalField(max_digits=11,
                                    decimal_places=6,
+                                   blank=True,
                                    verbose_name='Longitud')
     LATITUD = models.DecimalField(max_digits=9,
                                   decimal_places=6,
+                                  blank=True,
                                   verbose_name='Latitud')
     trabajo = models.ForeignKey('TrabajosRealizados')
 
@@ -859,10 +879,12 @@ class EstructuraActorSocial(models.Model):
     CD_BENEFICIO_AS = models.ForeignKey('C_BENEFICIO_AS',
                                         verbose_name='Clave del Beneficio entregado')
     NU_IMP_MONETARIO = models.DecimalField(max_digits=11,
-                                           decimal_places=2,
-                                           blank=True,
-                                           verbose_name='Importe total en pesos que representa(n) el (los) Beneficio(s) entregado(s)')
-    NU_MES_PAGO = models.IntegerField(verbose_name='Mes en que se entregó el (los) Beneficio(s)')
+                                    decimal_places=2,
+                                    blank=True,
+                                    verbose_name='Importe total en pesos que representa(n) el (los) Beneficio(s) entregado(s)')
+    # NU_MES_PAGO = models.CharField(verbose_name='Mes en que se entregó el (los) Beneficio(s)',
+    #                                max_length=25,
+    #                                choices=MESES)
     CD_ENT_PAGO = models.ForeignKey('C_ENTIDAD',
                                     related_name='EAS_cdentpago',
                                     default='',
@@ -1155,7 +1177,7 @@ class EstructuraPoblacion(models.Model):
         )
 
 
-# Catalogos de Sistema ----------------------------------------
+# Catalogos de Sistema -------------------------------------------------------------------------------------------------
 
 # Tipo de Padrón
 class Cat_TipoPadron(models.Model):

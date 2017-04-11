@@ -32,16 +32,29 @@ admin.site.register(C_PADRON)
 admin.site.register(C_PROGRAMA)
 admin.site.register(C_TP_ASENTAMIENTO)
 admin.site.register(C_TP_BENEFICIO)
+admin.site.register(C_TP_VIALIDAD)
 admin.site.register(C_UR)
 
 
 ## Catalogos de Actor Social
+
+
 ## Catalogos de Persona Fisica
+admin.site.register(C_BENEFICIO)
+admin.site.register(C_CORRESP)
+admin.site.register(C_ESTATUS_BEN)
+admin.site.register(C_ESTATUS_HOG)
+admin.site.register(C_EDO_CIVIL)
+admin.site.register(C_PARENTESCO)
+admin.site.register(C_TP_BEN)
+admin.site.register(C_TP_BEN_DET)
+admin.site.register(C_TP_EXPEDICION)
+
+
 ## Catalogos de Poblacion Beneficiaria
 
 # Cat monterrubio
 admin.site.register(C_ADMIN)
-admin.site.register(C_TP_VIALIDAD)
 admin.site.register(C_PROGRAMA_DGTIC)
 admin.site.register(C_A_SUBPROG)
 admin.site.register(C_AP_DESC)
@@ -58,12 +71,6 @@ admin.site.register(C_ID_GRUPO)
 admin.site.register(C_TP_ACT_SOC)
 admin.site.register(C_CARGO)
 admin.site.register(C_BENEFICIO_AS)
-admin.site.register(C_TP_BEN)
-admin.site.register(C_EDO_CIVIL)
-admin.site.register(C_PARENTESCO)
-admin.site.register(C_TP_BEN_DET)
-admin.site.register(C_BENEFICIO)
-admin.site.register(C_CORRESP)
 admin.site.register(C_PERIODO)
 admin.site.register(C_BENEFICIO_PROG)
 admin.site.register(C_TP_BENEFICIO_PROG)
@@ -72,12 +79,10 @@ admin.site.register(C_BENEFICIO_AS_PROG)
 admin.site.register(C_BENEFICIO_OB_PROG)
 admin.site.register(C_MUNICIPIO)
 admin.site.register(C_LOCALIDAD)
-admin.site.register(C_ESTATUS_HOG)
-# admin.site.register(C_ENTIDAD_FEDERATIVA)
 
 ## Estructuras
 admin.site.register(EstructuraPersonas)
-# admin.site.register(EstructuraActorSocial)
+admin.site.register(EstructuraActorSocial)
 admin.site.register(EstructuraPoblacion)
 
 ##

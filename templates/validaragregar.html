@@ -69,47 +69,5 @@
 
 {% block inlinescripts %}
 
-    <script src="{% static "assets/js/dataTables/jquery.validate.js" %}"></script>
-    <script src="{% static "assets/js/dataTables/jquery.additional-methods.js" %}"></script>
-
-    <script type="application/javascript">
-    $('#addrecord').validate({
-        errorElement: 'div',
-        errorClass: 'help-block',
-        focusInvalid: false,
-        rules: {
-            CD_DEPENDENCIA: {
-            required: true
-            },
-            CD_INSTITUCION: {
-            required: true
-            },
-            CD_PADRON: {
-            required: true,
-            }
-        },
-
-        messages: {
-        email: {
-        required: "Please provide a valid email.",
-        email: "Please provide a valid email."
-        }
-        },
-
-        highlight: function (e) {
-        $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
-        },
-
-        success: function (e) {
-        $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
-        $(e).remove();
-        },
-
-        errorPlacement: function (error, element) {
-        error.insertAfter(element.parent());
-        }
-        });
-    </script>
-
 
 {% endblock %}
