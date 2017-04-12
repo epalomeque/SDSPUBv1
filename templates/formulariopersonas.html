@@ -63,24 +63,24 @@
                         {% endif %}
                         {{ formulario.IN_IRIS }} </li>
                 </fieldset>
-                <fieldset>
-                    <legend>Levantamiento de CUIS</legend>
-                    <li>{{ formulario.ID_CUIS_PS.label_tag }}
-                        {% if formulario.ID_CUIS_PS.errors %}
-                            {{ formulario.ID_CUIS_PS.errors }}
-                        {% endif %}
-                        {{ formulario.ID_CUIS_PS }} </li>
-                    <li>{{ formulario.ID_CUIS_SEDESOL.label_tag }}
-                        {% if formulario.ID_CUIS_SEDESOL.errors %}
-                            {{ formulario.ID_CUIS_SEDESOL.errors }}
-                        {% endif %}
-                        {{ formulario.ID_CUIS_SEDESOL }} </li>
-                    <li>{{ formulario.FH_LEVANTAMIENTO.label_tag }}
-                        {% if formulario.FH_LEVANTAMIENTO.errors %}
-                            {{ formulario.FH_LEVANTAMIENTO.errors }}
-                        {% endif %}
-                        {{ formulario.FH_LEVANTAMIENTO }} </li>
-                </fieldset>
+{#                <fieldset>#}
+{#                    <legend>Levantamiento de CUIS</legend>#}
+{#                    <li>{{ formulario.ID_CUIS_PS.label_tag }}#}
+{#                        {% if formulario.ID_CUIS_PS.errors %}#}
+{#                            {{ formulario.ID_CUIS_PS.errors }}#}
+{#                        {% endif %}#}
+{#                        {{ formulario.ID_CUIS_PS }} </li>#}
+{#                    <li>{{ formulario.ID_CUIS_SEDESOL.label_tag }}#}
+{#                        {% if formulario.ID_CUIS_SEDESOL.errors %}#}
+{#                            {{ formulario.ID_CUIS_SEDESOL.errors }}#}
+{#                        {% endif %}#}
+{#                        {{ formulario.ID_CUIS_SEDESOL }} </li>#}
+{#                    <li>{{ formulario.FH_LEVANTAMIENTO.label_tag }}#}
+{#                        {% if formulario.FH_LEVANTAMIENTO.errors %}#}
+{#                            {{ formulario.FH_LEVANTAMIENTO.errors }}#}
+{#                        {% endif %}#}
+{#                        {{ formulario.FH_LEVANTAMIENTO }} </li>#}
+{#                </fieldset>#}
                 <fieldset>
                     <legend>Datos de la dependencia y padrón</legend>
                     <li>{{ formulario.CD_INSTITUCION.label_tag }}
