@@ -42,6 +42,9 @@
             {% endif %}
 
             <div class="formulario">
+                {% if trabajo.TipoPadron_id == 2 %}
+                    {% include "formulariopersonas.html" %}
+                {% else %}
                 {% for campo in formulario.visible_fields %}
                     <!--li class="col-xs-4"-->
                     <li>
@@ -52,6 +55,7 @@
                         {{ campo }}
                     </li>
                 {% endfor %}
+                {% endif %}
                 {% for hidden in formulario.hidden_fields %}
                 {{ hidden }}
                 {% endfor %}
@@ -68,6 +72,22 @@
 
 
 {% block inlinescripts %}
+  <script src="{% static "assets/js/djangoajax.js" %}"></script>
+
+  {% if trabajo.TipoPadron_id == 2 %}
+  <script>
 
 
+    $("#id_NB_CURP").change(function () {
+      console.log( $(this).val() );
+    });
+    $("#id_CD_ENT_PAGO").change(function () {
+      console.log( $(this).val() );
+    });
+    $("#id_CD_MUN_PAGO").change(function () {
+      console.log( $(this).val() );
+    });
+
+  </script>
+  {% endif %}
 {% endblock %}

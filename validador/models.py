@@ -586,10 +586,13 @@ class EstructuraPersonas(models.Model):
                                 verbose_name='ID del hogar')
     ID_CUIS_PS = models.CharField(max_length=40,
                                   default='',
+                                  blank=True,
                                   verbose_name='ID CUIS')
     ID_CUIS_SEDESOL = models.CharField(max_length=40,
+                                       blank=True,
                                        verbose_name='ID CUIS SEDESOL')
-    FH_LEVANTAMIENTO = models.DateField(verbose_name='Fecha de levantamiento')
+    FH_LEVANTAMIENTO = models.DateField(blank=True,
+                                        verbose_name='Fecha de levantamiento')
     ID_PERSONA = models.CharField(max_length=40,
                                   default='',
                                   verbose_name='ID de Persona')
@@ -603,7 +606,7 @@ class EstructuraPersonas(models.Model):
     NB_NOMBRE = models.CharField(max_length=50,
                                  default='',
                                  verbose_name='Nombre')
-    FH_NACIMIENTO = models.DateField(verbose_name='Fecha de nacimiento')
+    FH_NACIMIENTO = models.DateField(default=None, verbose_name='Fecha de nacimiento')
     CD_SEXO = models.CharField(max_length=1,
                                default=None,
                                choices=HM_CHOICES,
@@ -670,17 +673,18 @@ class EstructuraPersonas(models.Model):
     CD_PARENTESCO = models.ForeignKey('C_PARENTESCO',
                                       verbose_name='Parentesco de la Persona con el Jefe del Hogar')
     CD_TP_BEN_DET = models.ForeignKey('C_TP_BEN_DET',
-                                      verbose_name='Clave del tipo de Beneficiario, afín con el motivo por el cual se otorga el Beneficio')
+                  verbose_name='Clave del tipo de Beneficiario, afín con el motivo por el cual se otorga el Beneficio')
     NU_BENEFICIOS = models.DecimalField(max_digits=10,
                                         decimal_places=2,
                                         verbose_name='Cantidad total de Beneficios entregados')
     CD_BENEFICIO = models.ForeignKey('C_BENEFICIO',
                                      verbose_name='Clave del Beneficio entregado')
     NU_IMP_MONETARIO = models.DecimalField(max_digits=10,
-                                           decimal_places=2,
-                                           blank=True,
-                                           verbose_name='Importe total en pesos que representa(n) el (los) Beneficio(s) entregado(s)')
-    NU_MES_PAGO = models.IntegerField(verbose_name='Mes en que se entregó el (los) Beneficio(s)')
+                           decimal_places=2,
+                           blank=True,
+                           verbose_name='Importe total en pesos que representa(n) el (los) Beneficio(s) entregado(s)')
+    NU_MES_PAGO = models.IntegerField(choices=MESES,
+                                      verbose_name='Mes en que se entregó el (los) Beneficio(s)')
     CD_MET_PAGO = models.ForeignKey('C_MET_PAGO',
                                     max_length=2,
                                     default='',
@@ -697,81 +701,90 @@ class EstructuraPersonas(models.Model):
                                verbose_name='Nombre de la vialidad')
     CARRETERA = models.CharField(max_length=255,
                                  default='',
-                                 verbose_name='Nombre compuesto de la carretera del Domicilio Geográfico del Beneficiario')
+                                 verbose_name='Nombre compuesto de la carretera del Domicilio del Beneficiario')
     CAMINO = models.CharField(max_length=255,
                               default='',
-                              verbose_name='Nombre compuesto del camino del Domicilio Geográfico del Beneficiario')
+                              verbose_name='Nombre compuesto del camino del Domicilio del Beneficiario')
     NUMEXTNUM1 = models.IntegerField(blank=True,
-                                     verbose_name='Número exterior del Domicilio Geográfico del Beneficiario')
+                                     verbose_name='Número exterior del Domicilio del Beneficiario')
     NUMEXTNUM2 = models.IntegerField(blank=True,
-                                     verbose_name='Número exterior del Domicilio Geográfico del Beneficiario')
+                                     verbose_name='Número exterior del Domicilio del Beneficiario')
     NUMEXTALF1 = models.CharField(max_length=35,
                                   default='',
-                                  verbose_name='Parte alfanumérica del número exterior del Domicilio Geográfico del Beneficiario')
+                                  verbose_name='Parte alfanumérica del número exterior del Domicilio del Beneficiario')
     NUMEXTANT = models.CharField(max_length=35,
                                  default='',
                                  blank=True,
-                                 verbose_name='Parte alfanumérica del número exterior anterior del Domicilio Geográfico del Beneficiario')
+                                 verbose_name='Parte alfanumérica del número exterior anterior del Domicilio del Beneficiario')
     NUMINTNUM = models.IntegerField(blank=True,
-                                    verbose_name='Número interior del Domicilio Geográfico del Beneficiario')
+                                    verbose_name='Número interior del Domicilio del Beneficiario')
     NUMINTALF = models.CharField(max_length=35,
                                  default='',
-                                 verbose_name='Parte alfanumérica del número interior del Domicilio Geográfico del Beneficiario')
+                                 verbose_name='Parte alfanumérica del número interior del Domicilio del Beneficiario')
     TIPOASEN = models.ForeignKey('C_TP_ASENTAMIENTO',
-                                 verbose_name='Tipo de Asentamiento humano del Domicilio Geográfico del Beneficiario' )
+                                 verbose_name='Tipo de Asentamiento humano del Domicilio del Beneficiario' )
     NOMASEN = models.CharField(max_length=255,
                                default='',
-                               verbose_name='Nombre del Asentamiento humano del Domicilio Geográfico del Beneficiario')
+                               verbose_name='Nombre del Asentamiento humano del Domicilio del Beneficiario')
     CP = models.CharField(max_length=5,
                           default='',
-                          verbose_name='Código Postal del Domicilio Geográfico del Beneficiario')
-    NOM_LOC = models.ForeignKey('C_LOCALIDAD',
-                                related_name='nomloc',
-                                verbose_name='Nombre de la localidad del Domicilio Geográfico del Beneficiario')
-    CVE_LOC = models.ForeignKey('C_LOCALIDAD',
-                                related_name='cveloc',
-                                verbose_name='Clave de la localidad del Domicilio Geográfico del Beneficiario')
-    NOM_MUN = models.ForeignKey('C_MUNICIPIO',
-                                related_name='nommun',
-                                verbose_name='Nombre del municipio del Domicilio Geográfico del Beneficiario')
-    CVE_MUN = models.ForeignKey('C_MUNICIPIO',
-                                related_name='cvemun',
-                                verbose_name='Clave del municipio del Domicilio Geográfico del Beneficiario')
+                          verbose_name='Código Postal del Domicilio del Beneficiario')
+    # NOM_MUN = models.ForeignKey('C_MUNICIPIO',
+    #                             related_name='nommun',
+    #                             verbose_name='Nombre del municipio del Domicilio del Beneficiario')
     NOM_ENT = models.ForeignKey('C_ENTIDAD',
                                 related_name='noment',
-                                verbose_name='Nombre de la Entidad Federativa del Domicilio Geográfico del Beneficiario')
+                                verbose_name='Clave/Nombre de la Entidad del Domicilio del Beneficiario')
+    CVE_MUN = models.ForeignKey('C_MUNICIPIO',
+                                related_name='cvemun',
+                                verbose_name='Clave/Nombre del municipio del Domicilio del Beneficiario')
     # CVE_ENT = models.ForeignKey('C_ENTIDAD',
     #                             related_name='cvent',
     #                             verbose_name='Clave de la Entidad Federativa del Domicilio Geográfico del Beneficiario')
+    # NOM_LOC = models.ForeignKey('C_LOCALIDAD',
+    #                             related_name='nomloc',
+    #                             verbose_name='Nombre de la localidad del Domicilio Geográfico del Beneficiario')
+    CVE_LOC = models.ForeignKey('C_LOCALIDAD',
+                                related_name='cveloc',
+                                verbose_name='Clave/Nombre de la localidad del Domicilio del Beneficiario')
     TIPOREF1 = models.ForeignKey('C_TP_VIALIDAD',
-                                 related_name='tiporef1',
-                                 verbose_name='Tipo de la primera de las entre-vialidades de referencia del Domicilio Geográfico del Beneficiario')
+             related_name='tiporef1',
+             verbose_name='Tipo de la primera de las entre-vialidades de referencia del Domicilio del Beneficiario')
     NOMREF1 = models.CharField(max_length=255,
-                               default='',
-                               verbose_name='Nombre de la primera de las entre-vialidades de referencia del Domicilio Geográfico del Beneficiario')
+             default='',
+             verbose_name='Nombre de la primera de las entre-vialidades de referencia del Domicilio del Beneficiario')
     TIPOREF2 = models.ForeignKey('C_TP_VIALIDAD',
-                                 related_name='tiporef2',
-                                 verbose_name='Tipo de la segunda de las entre-vialidades de referencia del Domicilio Geográfico del Beneficiario')
+             related_name='tiporef2',
+             verbose_name='Tipo de la segunda de las entre-vialidades de referencia del Domicilio del Beneficiario')
     NOMREF2 = models.CharField(max_length=255,
-                               default='',
-                               verbose_name='Nombre de la segunda de las entre-vialidades de referencia del Domicilio Geográfico del Beneficiario' )
+             default='',
+             verbose_name='Nombre de la segunda de las entre-vialidades de referencia del Domicilio del Beneficiario' )
     TIPOREF3 = models.ForeignKey('C_TP_VIALIDAD',
-                                 related_name='tiporef3',
-                                 verbose_name='Tipo de la vialidad ubicada en la parte posterior del Domicilio Geográfico del Beneficiario')
+             related_name='tiporef3',
+             verbose_name='Tipo de la vialidad ubicada en la parte posterior del Domicilio del Beneficiario')
     NOMREF3 = models.CharField(max_length=255,
-                               default='',
-                               verbose_name='Nombre de la vialidad que se ubica en la parte posterior del Domicilio Geográfico del Beneficiario')
+             default='',
+             verbose_name='Nombre de la vialidad que se ubica en la parte posterior del Domicilio del Beneficiario')
     DESCRUBIC = models.CharField(max_length=255,
                                  default='',
                                  verbose_name='Descripción de la ubicación')
-    AGEB = models.ForeignKey('C_AGEB',
-                             related_name='EPER_ageb',
+    # AGEB = models.ForeignKey('C_AGEB',
+    #                          related_name='EPER_ageb',
+    #                          default=0,
+    #                          blank=True,
+    #                          verbose_name='Clave del Área Geográfica Estadística Básica')
+    AGEB = models.CharField( max_length=9,
+                             default='',
+                             blank=True,
                              verbose_name='Clave del Área Geográfica Estadística Básica')
-    CLAVE_MZNA = models.ForeignKey('C_MANZANA',
-                                   max_length=3,
-                                   default=None,
-                                   blank=True,
-                                   verbose_name='Clave de manzana')
+    # CLAVE_MZNA = models.ForeignKey('C_MANZANA',
+    #                                max_length=3,
+    #                                default=None,
+    #                                blank=True,
+    #                                verbose_name='Clave de manzana')
+    CLAVE_MZNA = models.CharField(max_length=3, default='',
+                                  blank=True,
+                                  verbose_name='Clave de manzana')
     LONGITUD = models.DecimalField(max_digits=11,
                                    decimal_places=6,
                                    blank=True,
@@ -882,9 +895,9 @@ class EstructuraActorSocial(models.Model):
                                     decimal_places=2,
                                     blank=True,
                                     verbose_name='Importe total en pesos que representa(n) el (los) Beneficio(s) entregado(s)')
-    # NU_MES_PAGO = models.CharField(verbose_name='Mes en que se entregó el (los) Beneficio(s)',
-    #                                max_length=25,
-    #                                choices=MESES)
+    NU_MES_PAGO = models.CharField(verbose_name='Mes en que se entregó el (los) Beneficio(s)',
+                                   max_length=25,
+                                   choices=MESES)
     CD_ENT_PAGO = models.ForeignKey('C_ENTIDAD',
                                     related_name='EAS_cdentpago',
                                     default='',

@@ -20044,11 +20044,13 @@ a.guit350 {
 
 div.formulario li {
   display:inline-block;
-  width: 32%;
+  width: 46%;
   min-width: 120px;
   padding-left: 10px;
   padding-right: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
+  margin-right: 1%;
+  margin-left: 1%;
 }
 div.formulario li label{
   display: block;
@@ -20060,7 +20062,9 @@ div.formulario li select{
   font-size: 20;
   min-width: 120px;
   width: 100%;
+  min-height: 45px;
   margin: 0;
+  border-width: 0 0 1px 0;
 }
 
 div.tabla li {
@@ -20086,4 +20090,8 @@ ul.errorlist li {
   width: auto;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+}
+
+.formulario fieldset legend {
+  color: #bfbfbf !important;
 }

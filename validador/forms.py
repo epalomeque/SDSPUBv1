@@ -59,11 +59,13 @@ class nuevoRegistroPersona(ModelForm):
             'NB_PRIMER_AP': {'required': 'Este campo es obligatorio'},
             'NB_SEGUNDO_AP': {'required': 'Este campo es obligatorio'},
             'NB_NOMBRE': {'required': 'Este campo es obligatorio'},
+            'NB_CURP':  {'required': 'Este campo es obligatorio'},
             'FH_NACIMIENTO': {'required': 'Este campo es obligatorio'},
             'FH_ALTA': {'required': 'Este campo es obligatorio'},
         }
         widgets = {
             'ID_HOGAR': forms.TextInput(attrs={'placeholder': '0000','required': True}),
+            'NB_CURP': forms.TextInput(attrs={'placeholder':'XXXXAAMMDDXEEXXX00'}),
             'ID_CUIS_PS': forms.TextInput(attrs={'placeholder': '0000'}),
             'ID_CUIS_SEDESOL': forms.TextInput(attrs={'placeholder': '0000'}),
             'FH_LEVANTAMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:90px',

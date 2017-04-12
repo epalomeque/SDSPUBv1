@@ -1,0 +1,342 @@
+{#                {% for campo in formulario.visible_fields %}#}
+                <!--li class="col-xs-4"-->
+                <fieldset>
+                    <legend>Datos de la persona</legend>
+                    <li>{{ formulario.ID_HOGAR.label_tag }}
+                        {% if formulario.ID_HOGAR.errors %}
+                            {{ formulario.ID_HOGAR.errors }}
+                        {% endif %}
+                        {{ formulario.ID_HOGAR }} </li>
+                    <li>{{ formulario.ID_PERSONA.label_tag }}
+                        {% if formulario.ID_PERSONA.errors %}
+                            {{ formulario.ID_PERSONA.errors }}
+                        {% endif %}
+                        {{ formulario.ID_PERSONA }} </li>
+                    <li>{{ formulario.NB_CURP.label_tag }}
+                        {% if formulario.NB_CURP.errors %}
+                            {{ formulario.NB_CURP.errors }}
+                        {% endif %}
+                        {{ formulario.NB_CURP }} </li>
+                    <li>{{ formulario.NB_PRIMER_AP.label_tag }}
+                        {% if formulario.NB_PRIMER_AP.errors %}
+                            {{ formulario.NB_PRIMER_AP.errors }}
+                        {% endif %}
+                        {{ formulario.NB_PRIMER_AP }} </li>
+                    <li>{{ formulario.NB_SEGUNDO_AP.label_tag }}
+                        {% if formulario.NB_SEGUNDO_AP.errors %}
+                            {{ formulario.NB_SEGUNDO_AP.errors }}
+                        {% endif %}
+                        {{ formulario.NB_SEGUNDO_AP }} </li>
+                    <li>{{ formulario.NB_NOMBRE.label_tag }}
+                        {% if formulario.NB_NOMBRE.errors %}
+                            {{ formulario.NB_NOMBRE.errors }}
+                        {% endif %}
+                        {{ formulario.NB_NOMBRE }} </li>
+                    <li>{{ formulario.FH_NACIMIENTO.label_tag }}
+                        {% if formulario.FH_NACIMIENTO.errors %}
+                            {{ formulario.FH_NACIMIENTO.errors }}
+                        {% endif %}
+                        {{ formulario.FH_NACIMIENTO }} </li>
+                    <li>{{ formulario.CD_SEXO.label_tag }}
+                        {% if formulario.CD_SEXO.errors %}
+                            {{ formulario.CD_SEXO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_SEXO }} </li>
+                    <li>{{ formulario.CD_EDO_NAC.label_tag }}
+                        {% if formulario.CD_EDO_NAC.errors %}
+                            {{ formulario.CD_EDO_NAC.errors }}
+                        {% endif %}
+                        {{ formulario.CD_EDO_NAC }} </li>
+                    <li>{{ formulario.CD_EDO_CIVIL.label_tag }}
+                        {% if formulario.CD_EDO_CIVIL.errors %}
+                            {{ formulario.CD_EDO_CIVIL.errors }}
+                        {% endif %}
+                        {{ formulario.CD_EDO_CIVIL }} </li>
+                    <li>{{ formulario.IN_HUELLA.label_tag }}
+                        {% if formulario.IN_HUELLA.errors %}
+                            {{ formulario.IN_HUELLA.errors }}
+                        {% endif %}
+                        {{ formulario.IN_HUELLA }} </li>
+                    <li>{{ formulario.IN_IRIS.label_tag }}
+                        {% if formulario.IN_IRIS.errors %}
+                            {{ formulario.IN_IRIS.errors }}
+                        {% endif %}
+                        {{ formulario.IN_IRIS }} </li>
+                </fieldset>
+                <fieldset>
+                    <legend>Levantamiento de CUIS</legend>
+                    <li>{{ formulario.ID_CUIS_PS.label_tag }}
+                        {% if formulario.ID_CUIS_PS.errors %}
+                            {{ formulario.ID_CUIS_PS.errors }}
+                        {% endif %}
+                        {{ formulario.ID_CUIS_PS }} </li>
+                    <li>{{ formulario.ID_CUIS_SEDESOL.label_tag }}
+                        {% if formulario.ID_CUIS_SEDESOL.errors %}
+                            {{ formulario.ID_CUIS_SEDESOL.errors }}
+                        {% endif %}
+                        {{ formulario.ID_CUIS_SEDESOL }} </li>
+                    <li>{{ formulario.FH_LEVANTAMIENTO.label_tag }}
+                        {% if formulario.FH_LEVANTAMIENTO.errors %}
+                            {{ formulario.FH_LEVANTAMIENTO.errors }}
+                        {% endif %}
+                        {{ formulario.FH_LEVANTAMIENTO }} </li>
+                </fieldset>
+                <fieldset>
+                    <legend>Datos de la dependencia y padrón</legend>
+                    <li>{{ formulario.CD_INSTITUCION.label_tag }}
+                        {% if formulario.CD_INSTITUCION.errors %}
+                            {{ formulario.CD_INSTITUCION.errors }}
+                        {% endif %}
+                        {{ formulario.CD_INSTITUCION }} </li>
+                    <li>{{ formulario.CD_PADRON.label_tag }}
+                        {% if formulario.CD_PADRON.errors %}
+                            {{ formulario.CD_PADRON.errors }}
+                        {% endif %}
+                        {{ formulario.CD_PADRON }} </li>
+                    <li>{{ formulario.CD_INTRAPROGRAMA.label_tag }}
+                        {% if formulario.CD_INTRAPROGRAMA.errors %}
+                            {{ formulario.Cd_INTRAPROGRAMA.errors }}
+                        {% endif %}
+                        {{ formulario.CD_INTRAPROGRAMA }} </li>
+                    <li>{{ formulario.FH_ALTA.label_tag }}
+                        {% if formulario.FH_ALTA.errors %}
+                            {{ formulario.FH_ALTA.errors }}
+                        {% endif %}
+                        {{ formulario.FH_ALTA }} </li>
+                </fieldset>
+                <fieldset>
+                    <legend>Detalle del beneficiario</legend>
+                    <li>{{ formulario.CD_ESTATUS_BEN.label_tag }}
+                        {% if formulario.CD_ESTATUS_BEN.errors %}
+                            {{ formulario.CD_ESTATUS_BEN.errors }}
+                        {% endif %}
+                        {{ formulario.CD_ESTATUS_BEN }} </li>
+                    <li>{{ formulario.CD_ESTATUS_HOG.label_tag }}
+                        {% if formulario.CD_ESTATUS_HOG.errors %}
+                            {{ formulario.CD_ESTATUS_HOG.errors }}
+                        {% endif %}
+                        {{ formulario.CD_ESTATUS_HOG }} </li>
+                    <li>{{ formulario.CD_ENT_PAGO.label_tag }}
+                        {% if formulario.CD_ENT_PAGO.errors %}
+                            {{ formulario.CD_ENT_PAGO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_ENT_PAGO }} </li>
+                    <li>{{ formulario.CD_MUN_PAGO.label_tag }}
+                        {% if formulario.CD_MUN_PAGO.errors %}
+                            {{ formulario.CD_MUN_PAGO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_MUN_PAGO }} </li>
+                    <li>{{ formulario.CD_LOC_PAGO.label_tag }}
+                        {% if formulario.CD_LOC_PAGO.errors %}
+                            {{ formulario.CD_LOC_PAGO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_LOC_PAGO }} </li>
+                    <li>{{ formulario.NB_PERIODO_CORRES.label_tag }}
+                        {% if formulario.NB_PERIODO_CORRES.errors %}
+                            {{ formulario.NB_PERIODO_CORRES.errors }}
+                        {% endif %}
+                        {{ formulario.NB_PERIODO_CORRES }} </li>
+                    <li>{{ formulario.CD_TP_BENEFICIO.label_tag }}
+                        {% if formulario.CD_TP_BENEFICIO.errors %}
+                            {{ formulario.CD_TP_BENEFICIO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_TP_BENEFICIO }} </li>
+                    <li>{{ formulario.CD_TP_EXPEDICION.label_tag }}
+                        {% if formulario.CD_TP_EXPEDICION.errors %}
+                            {{ formulario.CD_TP_EXPEDICION.errors }}
+                        {% endif %}
+                        {{ formulario.CD_TP_EXPEDICION }} </li>
+                    <li>{{ formulario.IN_TITULAR.label_tag }}
+                        {% if formulario.IN_TITULAR.errors %}
+                            {{ formulario.IN_TITULAR.errors }}
+                        {% endif %}
+                        {{ formulario.IN_TITULAR }} </li>
+                    <li>{{ formulario.CD_PARENTESCO.label_tag }}
+                        {% if formulario.CD_PARENTESCO.errors %}
+                            {{ formulario.CD_PARENTESCO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_PARENTESCO }} </li>
+                    <li>{{ formulario.CD_TP_BEN_DET.label_tag }}
+                        {% if formulario.CD_TP_BEN_DET.errors %}
+                            {{ formulario.CD_TP_BEN_DET.errors }}
+                        {% endif %}
+                        {{ formulario.CD_TP_BEN_DET }} </li>
+                    <li>{{ formulario.NU_BENEFICIOS.label_tag }}
+                        {% if formulario.NU_BENEFICIOS.errors %}
+                            {{ formulario.NU_BENEFICIOS.errors }}
+                        {% endif %}
+                        {{ formulario.NU_BENEFICIOS }} </li>
+                    <li>{{ formulario.CD_BENEFICIO.label_tag }}
+                        {% if formulario.CD_BENEFICIO.errors %}
+                            {{ formulario.CD_BENEFICIO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_BENEFICIO }} </li>
+                    <li>{{ formulario.NU_IMP_MONETARIO.label_tag }}
+                        {% if formulario.NU_IMP_MONETARIO.errors %}
+                            {{ formulario.NU_IMP_MONETARIO.errors }}
+                        {% endif %}
+                        {{ formulario.NU_IMP_MONETARIO }} </li>
+                    <li>{{ formulario.NU_MES_PAGO.label_tag }}
+                        {% if formulario.NU_MES_PAGO.errors %}
+                            {{ formulario.NU_MES_PAGO.errors }}
+                        {% endif %}
+                        {{ formulario.NU_MES_PAGO }} </li>
+                    <li>{{ formulario.CD_MET_PAGO.label_tag }}
+                        {% if formulario.CD_MET_PAGO.errors %}
+                            {{ formulario.CD_MET_PAGO.errors }}
+                        {% endif %}
+                        {{ formulario.CD_MET_PAGO }} </li>
+                    <li>{{ formulario.ID_AGRUPADOR.label_tag }}
+                        {% if formulario.ID_AGRUPADOR.errors %}
+                            {{ formulario.ID_AGRUPADOR.errors }}
+                        {% endif %}
+                        {{ formulario.ID_AGRUPADOR }} </li>
+                    <li>{{ formulario.IN_CORRESP.label_tag }}
+                        {% if formulario.IN_CORRESP.errors %}
+                            {{ formulario.IN_CORRESP.errors }}
+                        {% endif %}
+                        {{ formulario.IN_CORRESP }} </li>
+                </fieldset>
+                <fieldset>
+                    <legend>Domicilio Geográfico</legend>
+                    <li>{{ formulario.TIPOVIAL.label_tag }}
+                        {% if formulario.TIPOVIAL.errors %}
+                            {{ formulario.TIPOVIAL.errors }}
+                        {% endif %}
+                        {{ formulario.TIPOVIAL }} </li>
+                    <li>{{ formulario.NOMVIAL.label_tag }}
+                        {% if formulario.NOMVIAL.errors %}
+                            {{ formulario.NOMVIAL.errors }}
+                        {% endif %}
+                        {{ formulario.NOMVIAL }} </li>
+                    <li>{{ formulario.CARRETERA.label_tag }}
+                        {% if formulario.CARRETERA.errors %}
+                            {{ formulario.CARRETERA.errors }}
+                        {% endif %}
+                        {{ formulario.CARRETERA }} </li>
+                    <li>{{ formulario.CAMINO.label_tag }}
+                        {% if formulario.CAMINO.errors %}
+                            {{ formulario.CAMINO.errors }}
+                        {% endif %}
+                        {{ formulario.CAMINO }} </li>
+                    <li>{{ formulario.NUMEXTNUM1.label_tag }}
+                        {% if formulario.NUMEXTNUM1.errors %}
+                            {{ formulario.NUMEXTNUM1.errors }}
+                        {% endif %}
+                        {{ formulario.NUMEXTNUM1 }} </li>
+                    <li>{{ formulario.NUMEXTNUM2.label_tag }}
+                        {% if formulario.NUMEXTNUM2.errors %}
+                            {{ formulario.NUMEXTNUM2.errors }}
+                        {% endif %}
+                        {{ formulario.NUMEXTNUM2 }} </li>
+                    <li>{{ formulario.NUMEXTALF1.label_tag }}
+                        {% if formulario.NUMEXTALF1.errors %}
+                            {{ formulario.NUMEXTALF1.errors }}
+                        {% endif %}
+                        {{ formulario.NUMEXTALF1 }} </li>
+                    <li>{{ formulario.NUMEXTANT.label_tag }}
+                        {% if formulario.NUMEXTANT.errors %}
+                            {{ formulario.NUMEXTANT.errors }}
+                        {% endif %}
+                        {{ formulario.NUMEXTANT }} </li>
+                    <li>{{ formulario.NUMINTNUM.label_tag }}
+                        {% if formulario.NUMINTNUM.errors %}
+                            {{ formulario.NUMINTNUM.errors }}
+                        {% endif %}
+                        {{ formulario.NUMINTNUM }} </li>
+                    <li>{{ formulario.NUMINTALF.label_tag }}
+                        {% if formulario.NUMINTALF.errors %}
+                            {{ formulario.NUMINTALF.errors }}
+                        {% endif %}
+                        {{ formulario.NUMINTALF }} </li>
+                    <li>{{ formulario.TIPOASEN.label_tag }}
+                        {% if formulario.TIPOASEN.errors %}
+                            {{ formulario.TIPOASEN.errors }}
+                        {% endif %}
+                        {{ formulario.TIPOASEN }} </li>
+                    <li>{{ formulario.NOMASEN.label_tag }}
+                        {% if formulario.NOMASEN.errors %}
+                            {{ formulario.NOMASEN.errors }}
+                        {% endif %}
+                        {{ formulario.NOMASEN }} </li>
+                    <li>{{ formulario.CP.label_tag }}
+                        {% if formulario.CP.errors %}
+                            {{ formulario.CP.errors }}
+                        {% endif %}
+                        {{ formulario.CP }} </li>
+                    <li>{{ formulario.CVE_LOC.label_tag }}
+                        {% if formulario.CVE_LOC.errors %}
+                            {{ formulario.CVE_LOC.errors }}
+                        {% endif %}
+                        {{ formulario.CVE_LOC }} </li>
+                    <li>{{ formulario.CVE_MUN.label_tag }}
+                        {% if formulario.CVE_MUN.errors %}
+                            {{ formulario.CVE_MUN.errors }}
+                        {% endif %}
+                        {{ formulario.CVE_MUN }} </li>
+                    <li>{{ formulario.NOM_ENT.label_tag }}
+                        {% if formulario.NOM_ENT.errors %}
+                            {{ formulario.NOM_ENT.errors }}
+                        {% endif %}
+                        {{ formulario.NOM_ENT }} </li>
+                    <li>{{ formulario.TIPOREF1.label_tag }}
+                        {% if formulario.TIPOREF1.errors %}
+                            {{ formulario.TIPOREF1.errors }}
+                        {% endif %}
+                        {{ formulario.TIPOREF1 }} </li>
+                    <li>{{ formulario.NOMREF1.label_tag }}
+                        {% if formulario.NOMREF1.errors %}
+                            {{ formulario.NOMREF1.errors }}
+                        {% endif %}
+                        {{ formulario.NOMREF1 }} </li>
+                    <li>{{ formulario.TIPOREF2.label_tag }}
+                        {% if formulario.TIPOREF2.errors %}
+                            {{ formulario.TIPOREF2.errors }}
+                        {% endif %}
+                        {{ formulario.TIPOREF2 }} </li>
+                    <li>{{ formulario.NOMREF2.label_tag }}
+                        {% if formulario.NOMREF2.errors %}
+                            {{ formulario.NOMREF2.errors }}
+                        {% endif %}
+                        {{ formulario.NOMREF2 }} </li>
+                    <li>{{ formulario.TIPOREF3.label_tag }}
+                        {% if formulario.TIPOREF3.errors %}
+                            {{ formulario.TIPOREF3.errors }}
+                        {% endif %}
+                        {{ formulario.TIPOREF3 }} </li>
+                    <li>{{ formulario.NOMREF3.label_tag }}
+                        {% if formulario.NOMREF3.errors %}
+                            {{ formulario.NOMREF3.errors }}
+                        {% endif %}
+                        {{ formulario.NOMREF3 }} </li>
+                    <li>{{ formulario.DESCRUBIC.label_tag }}
+                        {% if formulario.DESCRUBIC.errors %}
+                            {{ formulario.DESCRUBIC.errors }}
+                        {% endif %}
+                        {{ formulario.DESCRUBIC }} </li>
+                    <li>{{ formulario.AGEB.label_tag }}
+                        {% if formulario.AGEB.errors %}
+                            {{ formulario.AGEB.errors }}
+                        {% endif %}
+                        {{ formulario.AGEB }} </li>
+                    <li>{{ formulario.CLAVE_MZNA.label_tag }}
+                        {% if formulario.CLAVE_MZNA.errors %}
+                            {{ formulario.CLAVE_MZNA.errors }}
+                        {% endif %}
+                        {{ formulario.CLAVE_MZNA }} </li>
+                    <li>{{ formulario.LONGITUD.label_tag }}
+                        {% if formulario.LONGITUD.errors %}
+                            {{ formulario.LONGITUD.errors }}
+                        {% endif %}
+                        {{ formulario.LONGITUD }} </li>
+                    <li>{{ formulario.LATITUD.label_tag }}
+                        {% if formulario.LATITUD.errors %}
+                            {{ formulario.LATITUD.errors }}
+                        {% endif %}
+                        {{ formulario.LATITUD }} </li>
+                </fieldset>
+
+{#                {% endfor %}#}
+                {% for hidden in formulario.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
