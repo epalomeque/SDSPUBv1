@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 # from validators import FileValidator
 
 # Create your models here.
@@ -32,9 +33,9 @@ TP_BENEFICIARIO_CHOICES = (
 )
 
 MESES = (
-    (1,'Enero'),      (2,'Febrero'),  (3,'Marzo'),      (4,'Abril'),
-    (5,'Mayo'),       (6,'Junio'),    (7,'Julio'),      (8,'Agosto'),
-    (9,'Septiembre'), (10,'Octubre'), (11,'Noviembre'), (12,'Diciembre')
+    (1,'ENERO'),      (2,'FEBRERO'),  (3,'MARZO'),      (4,'ABRIL'),
+    (5,'MAYO'),       (6,'JUNIO'),    (7,'JULIO'),      (8,'AGOSTO'),
+    (9,'SEPTIEMBRE'), (10,'OCTUBRE'), (11,'NOVIEMBRE'), (12,'DICIEMBRE')
 )
 
 
@@ -60,7 +61,8 @@ class C_DEPENDENCIA(models.Model):
     LAST = models.CharField(max_length=5, blank=True)
 
     def __unicode__(self):
-        return '%s | %s' % (self.NB_DEPEN_CORTO, self.NB_DEPENDENCIA)
+        #return '%s | %s' % (self.NB_DEPEN_CORTO, self.NB_DEPENDENCIA)
+        return '%s' % (self.NB_DEPENDENCIA)
 
 
 # Catálogo de las unidades administrativa responsables de operar programas (TODOS).
@@ -73,7 +75,8 @@ class C_UR(models.Model):
     NB_UR = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return '%s | %s | %s' % (self.CD_INSTITUCION, self.CD_U_R, self.NB_UR)
+        # return '%s | %s | %s' % (self.CD_INSTITUCION, self.CD_U_R, self.NB_UR)
+        return '%s' % (self.NB_UR)
 
 
 # Catálogo de tipos de subprograma  o proyecto que se genere de un programa (TODOS).
@@ -87,7 +90,8 @@ class C_INTRAPROGRAMAS(models.Model):
     NB_PROGRAMA = models.CharField(max_length=60, blank=True)
 
     def __unicode__(self):
-        return '%s | %s' % (self.CD_INTRAPROGRAMA, self.NB_INTRAPROGRAMA)
+        # return '%s | %s' % (self.CD_INTRAPROGRAMA, self.NB_INTRAPROGRAMA)
+        return '%s' % (self.NB_INTRAPROGRAMA)
 
 
 # Catálogo de entidades de nacimiento (TODOS) INEGI, RENAPO.
@@ -147,14 +151,14 @@ class C_PROGRAMA(models.Model):
 
 #
 class C_PADRON(models.Model):
-    CD_PROGRAMA = models.ForeignKey('C_PROGRAMA')
-    CD_PADRON = models.IntegerField()
-    ANIO = models.IntegerField()
-    CD_INSTITUCION = models.ForeignKey('C_UR')
-    TP_BENEFICIARIO = models.CharField(choices=TP_BENEFICIARIO_CHOICES, max_length=2)
+    CD_PROGRAMA = models.ForeignKey('C_PROGRAMA', default=2550)
+    CD_PADRON = models.IntegerField(default=1)
+    ANIO = models.IntegerField(default=2016)
+    CD_INSTITUCION = models.ForeignKey('C_UR',default=7201)
+    TP_BENEFICIARIO = models.CharField(choices=TP_BENEFICIARIO_CHOICES, max_length=2, default='PF')
     NB_PROGRAMA = models.CharField(max_length=255)
-    NB_SUBP1 = models.CharField(max_length=255, blank=True)
-    CD_DEPENDENCIA = models.ForeignKey('C_DEPENDENCIA')
+    NB_SUBP1 = models.CharField(max_length=255, blank=True, default='')
+    CD_DEPENDENCIA = models.ForeignKey('C_DEPENDENCIA',default=1)
 
     def __unicode__(self):
         return '%s' % (self.NB_PROGRAMA)
@@ -200,7 +204,7 @@ class C_TP_VIALIDAD(models.Model):
 class C_BENEFICIO(models.Model):
     CD_BENEFICIO = models.IntegerField()
     NB_BENEFICIO = models.CharField(max_length=200)
-    ANIO = models.IntegerField()
+    ANIO = models.IntegerField(default=2016)
     SEUSAEN = models.CharField(max_length=150)
 
     def __unicode__(self):
@@ -213,16 +217,17 @@ class C_CORRESP(models.Model):
     NB_CORRESP = models.CharField(max_length=60)
 
     def __unicode__(self):
-        return '%s | %s' % (self.IN_CORRESP, self.NB_CORRESP)
-
+        # return '%s | %s' % (self.IN_CORRESP, self.NB_CORRESP)
+        return '%s' % (self.NB_CORRESP)
 
 # Estatus del Beneficiario
 class C_ESTATUS_BEN(models.Model):
-    CD_ESTATUS_BEN = models.IntegerField()
+    CD_ESTATUS_BEN = models.IntegerField(default=0)
     NB_ESTATUS = models.CharField(max_length=25)
 
     def __unicode__(self):
-        return '%s| %s' % (self.CD_ESTATUS_BEN, self.NB_ESTATUS)
+        # return '%s| %s' % (self.CD_ESTATUS_BEN, self.NB_ESTATUS)
+        return '%s' % (self.NB_ESTATUS)
 
 
 # EStatus del Hogar
@@ -239,7 +244,8 @@ class C_EDO_CIVIL(models.Model):
     NB_EDO_CIVIL = models.CharField(max_length=60)
 
     def __unicode__(self):
-        return '%s | %s' % (self.CD_EDO_CIVIL, self.NB_EDO_CIVIL)
+        #return '%s | %s' % (self.CD_EDO_CIVIL, self.NB_EDO_CIVIL)
+        return '%s' % (self.NB_EDO_CIVIL)
 
 
 # Parentescos de los integrantes de los hogares con el jefe de familia (PF).
@@ -248,10 +254,11 @@ class C_PARENTESCO(models.Model):
     NB_PARENTESCO = models.CharField(max_length=60)
 
     def __unicode__(self):
-        return '%s | %s' % (self.CD_PARENTESCO, self.NB_PARENTESCO)
+        #return '%s | %s' % (self.CD_PARENTESCO, self.NB_PARENTESCO)
+        return '%s' % (self.NB_PARENTESCO)
 
 
-# Tipos de beneficiario (PF). Para información anterior a 2012.
+# Tipos de beneficiario (PF).
 class C_TP_BEN(models.Model):
     CD_TP_BEN = models.CharField(max_length=60)
     NB_TP_BEN = models.CharField(max_length=60)
@@ -269,11 +276,11 @@ class C_TP_BEN_DET(models.Model):
     # SEUSAEN = models.CharField(max_length=200)
 
     def __unicode__(self):
-        return '%s | %s' % (self.CD_TP_BEN_DET, self.NB_TP_BEN_DET)
-
+        #return '%s | %s' % (self.CD_TP_BEN_DET, self.NB_TP_BEN_DET)
+        return '%s' % (self.NB_TP_BEN_DET)
 
 class C_TP_EXPEDICION(models.Model):
-    CD_TP_EXPEDICION = models.IntegerField()
+    CD_TP_EXPEDICION = models.IntegerField(default=1)
     NB_TP_EXPEDICION = models.CharField(max_length=25)
 
     def __unicode__(self):
@@ -300,13 +307,12 @@ class C_MUNICIPIO(models.Model):
     CVE_ENT = models.ForeignKey(C_ENTIDAD)
 
     def __unicode__(self):
-        return '%s | %s ' % (self.CVE_ENT.NB_ENT, self.NO_MUN)
+        # return '%s | %s ' % (self.CVE_ENT.NB_ENT, self.NO_MUN)
+        return '%s | %s ' % (self.CV_MUN, self.NO_MUN)
 
     def as_dict(self):
         return {
-            "cv_mun": self.CV_MUN,
-            "no_mun": self.NO_MUN,
-            "cve_ent": self.CVE_ENT
+            self.CV_MUN : self.NO_MUN,
         }
 
 
@@ -316,7 +322,8 @@ class C_LOCALIDAD(models.Model):
     CVE_MUN = models.ForeignKey(C_MUNICIPIO)
 
     def __unicode__(self):
-        return '%s | %s | %s' % (self.CVE_MUN_id, self.CV_LOC, self.NO_LOC)
+        #return '%s | %s | %s' % (self.CVE_MUN_id, self.CV_LOC, self.NO_LOC)
+        return '%s | Loc.: %s' % (self.CVE_MUN.NO_MUN, self.NO_LOC)
 
     def as_dict(self):
         return {
@@ -590,8 +597,10 @@ class EstructuraPersonas(models.Model):
                                   verbose_name='ID CUIS')
     ID_CUIS_SEDESOL = models.CharField(max_length=40,
                                        blank=True,
+                                       default='',
                                        verbose_name='ID CUIS SEDESOL')
     FH_LEVANTAMIENTO = models.DateField(blank=True,
+                                        default=timezone.now(),
                                         verbose_name='Fecha de levantamiento')
     ID_PERSONA = models.CharField(max_length=40,
                                   default='',
@@ -665,7 +674,8 @@ class EstructuraPersonas(models.Model):
                                          verbose_name='Periodo correspondiente a los apoyos pagados')
     CD_TP_BENEFICIO = models.ForeignKey('C_TP_BENEFICIO',
                                         verbose_name='Tipo de beneficio')
-    CD_TP_EXPEDICION = models.ForeignKey('C_TP_EXPEDICION', verbose_name='Tipo de expedición del apoyo')
+    CD_TP_EXPEDICION = models.ForeignKey('C_TP_EXPEDICION',
+                                         verbose_name='Tipo de expedición del apoyo')
     IN_TITULAR = models.CharField(max_length=1,
                                   choices=SINO_CHOICES,
                                   default=None,
@@ -796,11 +806,12 @@ class EstructuraPersonas(models.Model):
     trabajo = models.ForeignKey('TrabajosRealizados')
 
     def __unicode__(self):
-        return 'IDR: %s | ID_PERSONA: %s | Nombre: %s %s %s' % (self.pk,
+        return 'IDR: %s | ID_PERSONA: %s | Nombre: %s %s %s | Programa: %s' % (self.pk,
                                                                self.ID_PERSONA,
                                                                self.NB_PRIMER_AP,
                                                                self.NB_SEGUNDO_AP,
-                                                               self.NB_NOMBRE
+                                                               self.NB_NOMBRE,
+                                                               self.CD_PADRON.CD_PROGRAMA
                                                                )
 
 

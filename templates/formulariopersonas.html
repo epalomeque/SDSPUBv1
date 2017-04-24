@@ -116,11 +116,11 @@
                             {{ formulario.CD_ESTATUS_HOG.errors }}
                         {% endif %}
                         {{ formulario.CD_ESTATUS_HOG }} </li>
-                    <li>{{ formulario.CD_ENT_PAGO.label_tag }}
-                        {% if formulario.CD_ENT_PAGO.errors %}
-                            {{ formulario.CD_ENT_PAGO.errors }}
-                        {% endif %}
-                        {{ formulario.CD_ENT_PAGO }} </li>
+{#                     <li>{{ formulario.CD_ENT_PAGO.label_tag }} #}
+{#                        {% if formulario.CD_ENT_PAGO.errors %} #}
+{#                            {{ formulario.CD_ENT_PAGO.errors }} #}
+{#                        {% endif %} #}
+{#                        {{ formulario.CD_ENT_PAGO }} </li> #}
                     <li>{{ formulario.CD_MUN_PAGO.label_tag }}
                         {% if formulario.CD_MUN_PAGO.errors %}
                             {{ formulario.CD_MUN_PAGO.errors }}
@@ -199,86 +199,81 @@
                 </fieldset>
                 <fieldset>
                     <legend>Domicilio Geográfico</legend>
-                    <li>{{ formulario.TIPOVIAL.label_tag }}
-                        {% if formulario.TIPOVIAL.errors %}
-                            {{ formulario.TIPOVIAL.errors }}
-                        {% endif %}
-                        {{ formulario.TIPOVIAL }} </li>
-                    <li>{{ formulario.NOMVIAL.label_tag }}
-                        {% if formulario.NOMVIAL.errors %}
-                            {{ formulario.NOMVIAL.errors }}
-                        {% endif %}
-                        {{ formulario.NOMVIAL }} </li>
-                    <li>{{ formulario.CARRETERA.label_tag }}
-                        {% if formulario.CARRETERA.errors %}
-                            {{ formulario.CARRETERA.errors }}
-                        {% endif %}
-                        {{ formulario.CARRETERA }} </li>
-                    <li>{{ formulario.CAMINO.label_tag }}
-                        {% if formulario.CAMINO.errors %}
-                            {{ formulario.CAMINO.errors }}
-                        {% endif %}
-                        {{ formulario.CAMINO }} </li>
-                    <li>{{ formulario.NUMEXTNUM1.label_tag }}
-                        {% if formulario.NUMEXTNUM1.errors %}
-                            {{ formulario.NUMEXTNUM1.errors }}
-                        {% endif %}
-                        {{ formulario.NUMEXTNUM1 }} </li>
-                    <li>{{ formulario.NUMEXTNUM2.label_tag }}
-                        {% if formulario.NUMEXTNUM2.errors %}
-                            {{ formulario.NUMEXTNUM2.errors }}
-                        {% endif %}
-                        {{ formulario.NUMEXTNUM2 }} </li>
-                    <li>{{ formulario.NUMEXTALF1.label_tag }}
-                        {% if formulario.NUMEXTALF1.errors %}
-                            {{ formulario.NUMEXTALF1.errors }}
-                        {% endif %}
-                        {{ formulario.NUMEXTALF1 }} </li>
-                    <li>{{ formulario.NUMEXTANT.label_tag }}
-                        {% if formulario.NUMEXTANT.errors %}
-                            {{ formulario.NUMEXTANT.errors }}
-                        {% endif %}
-                        {{ formulario.NUMEXTANT }} </li>
-                    <li>{{ formulario.NUMINTNUM.label_tag }}
-                        {% if formulario.NUMINTNUM.errors %}
-                            {{ formulario.NUMINTNUM.errors }}
-                        {% endif %}
-                        {{ formulario.NUMINTNUM }} </li>
-                    <li>{{ formulario.NUMINTALF.label_tag }}
-                        {% if formulario.NUMINTALF.errors %}
-                            {{ formulario.NUMINTALF.errors }}
-                        {% endif %}
-                        {{ formulario.NUMINTALF }} </li>
-                    <li>{{ formulario.TIPOASEN.label_tag }}
-                        {% if formulario.TIPOASEN.errors %}
-                            {{ formulario.TIPOASEN.errors }}
-                        {% endif %}
-                        {{ formulario.TIPOASEN }} </li>
-                    <li>{{ formulario.NOMASEN.label_tag }}
-                        {% if formulario.NOMASEN.errors %}
-                            {{ formulario.NOMASEN.errors }}
-                        {% endif %}
-                        {{ formulario.NOMASEN }} </li>
-                    <li>{{ formulario.CP.label_tag }}
-                        {% if formulario.CP.errors %}
-                            {{ formulario.CP.errors }}
-                        {% endif %}
-                        {{ formulario.CP }} </li>
-                    <li>{{ formulario.CVE_LOC.label_tag }}
-                        {% if formulario.CVE_LOC.errors %}
-                            {{ formulario.CVE_LOC.errors }}
-                        {% endif %}
-                        {{ formulario.CVE_LOC }} </li>
                     <li>{{ formulario.CVE_MUN.label_tag }}
                         {% if formulario.CVE_MUN.errors %}
                             {{ formulario.CVE_MUN.errors }}
                         {% endif %}
                         {{ formulario.CVE_MUN }} </li>
-                    <li>{{ formulario.NOM_ENT.label_tag }}
-                        {% if formulario.NOM_ENT.errors %}
-                            {{ formulario.NOM_ENT.errors }}
+                    <li>{{ formulario.CVE_LOC.label_tag }}
+                        {% if formulario.CVE_LOC.errors %}
+                            {{ formulario.CVE_LOC.errors }}
                         {% endif %}
-                        {{ formulario.NOM_ENT }} </li>
+                        {{ formulario.CVE_LOC }} </li>
+                    <li>{{ formulario.TIPOVIAL.label_tag }}
+                    {% if formulario.TIPOVIAL.errors %}
+                            {{ formulario.TIPOVIAL.errors }}
+                        {% endif %}
+                    {{ formulario.TIPOVIAL }} </li>
+                    <li>{{ formulario.NOMVIAL.label_tag }}
+                    {% if formulario.NOMVIAL.errors %}
+                            {{ formulario.NOMVIAL.errors }}
+                        {% endif %}
+                    {{ formulario.NOMVIAL }} </li>
+                    <li>{{ formulario.CARRETERA.label_tag }}
+                    {% if formulario.CARRETERA.errors %}
+                            {{ formulario.CARRETERA.errors }}
+                        {% endif %}
+                    {{ formulario.CARRETERA }} </li>
+                    <li>{{ formulario.CAMINO.label_tag }}
+                    {% if formulario.CAMINO.errors %}
+                            {{ formulario.CAMINO.errors }}
+                        {% endif %}
+                    {{ formulario.CAMINO }} </li>
+                    <li>{{ formulario.NUMEXTNUM1.label_tag }}
+                    {% if formulario.NUMEXTNUM1.errors %}
+                            {{ formulario.NUMEXTNUM1.errors }}
+                        {% endif %}
+                    {{ formulario.NUMEXTNUM1 }} </li>
+                    <li>{{ formulario.NUMEXTNUM2.label_tag }}
+                    {% if formulario.NUMEXTNUM2.errors %}
+                            {{ formulario.NUMEXTNUM2.errors }}
+                        {% endif %}
+                    {{ formulario.NUMEXTNUM2 }} </li>
+                    <li>{{ formulario.NUMEXTALF1.label_tag }}
+                    {% if formulario.NUMEXTALF1.errors %}
+                            {{ formulario.NUMEXTALF1.errors }}
+                        {% endif %}
+                    {{ formulario.NUMEXTALF1 }} </li>
+                    <li>{{ formulario.NUMEXTANT.label_tag }}
+                    {% if formulario.NUMEXTANT.errors %}
+                            {{ formulario.NUMEXTANT.errors }}
+                        {% endif %}
+                    {{ formulario.NUMEXTANT }} </li>
+                    <li>{{ formulario.NUMINTNUM.label_tag }}
+                    {% if formulario.NUMINTNUM.errors %}
+                            {{ formulario.NUMINTNUM.errors }}
+                        {% endif %}
+                    {{ formulario.NUMINTNUM }} </li>
+                    <li>{{ formulario.NUMINTALF.label_tag }}
+                    {% if formulario.NUMINTALF.errors %}
+                            {{ formulario.NUMINTALF.errors }}
+                        {% endif %}
+                    {{ formulario.NUMINTALF }} </li>
+                    <li>{{ formulario.TIPOASEN.label_tag }}
+                    {% if formulario.TIPOASEN.errors %}
+                            {{ formulario.TIPOASEN.errors }}
+                        {% endif %}
+                    {{ formulario.TIPOASEN }} </li>
+                    <li>{{ formulario.NOMASEN.label_tag }}
+                    {% if formulario.NOMASEN.errors %}
+                            {{ formulario.NOMASEN.errors }}
+                        {% endif %}
+                    {{ formulario.NOMASEN }} </li>
+                    <li>{{ formulario.CP.label_tag }}
+                    {% if formulario.CP.errors %}
+                            {{ formulario.CP.errors }}
+                        {% endif %}
+                    {{ formulario.CP }} </li>
                     <li>{{ formulario.TIPOREF1.label_tag }}
                         {% if formulario.TIPOREF1.errors %}
                             {{ formulario.TIPOREF1.errors }}
@@ -335,8 +330,3 @@
                         {% endif %}
                         {{ formulario.LATITUD }} </li>
                 </fieldset>
-
-{#                {% endfor %}#}
-                {% for hidden in formulario.hidden_fields %}
-                {{ hidden }}
-                {% endfor %}

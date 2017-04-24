@@ -85,6 +85,7 @@
 {% endblock %}
 
 {% block breadcrumb_zone %}
+    <div class="row">Elbreadcrumb</div>
 {% endblock %}
 
 {% block settingsbox %}
@@ -99,28 +100,11 @@
             <div class="widget-box transparent ui-sortable-handle" style="opacity: 1;">
                 <div class="widget-header">
                     <h4 class="widget-title lighter">Padrón de Actores Sociales</h4>
-
-                    <!-- div class="widget-toolbar no-border">
-                        <a href="#" data-action="settings">
-                            <i class="ace-icon fa fa-cog"></i>
-                        </a>
-
-                        <a href="#" data-action="reload">
-                            <i class="ace-icon fa fa-refresh"></i>
-                        </a>
-
-                        <a href="#" data-action="collapse">
-                            <i class="ace-icon fa fa-chevron-up"></i>
-                        </a>
-
-                        <a href="#" data-action="close">
-                            <i class="ace-icon fa fa-times"></i>
-                        </a>
-                    </div-->
                 </div>
 
                 <div class="widget-body">
                     <p class="lead">Actualmente existen<span class="numerorecords">{{ actorescount }}</span>registros</p>
+                    <p><strong>Reportados a través de {{ padronesAS }} padrones</strong></p>
                     <div class="widget-main padding-6 no-padding-left no-padding-right text-justify jeig170">
                     En la estructura de Actores Sociales Beneficiarios se debe incluir la información de todos los integrantes del Actor Social que recibió el apoyo. El apoyo se reportará en el Registro correspondiente al titular de la organización, el resto de integrantes no incluirán información sobre Beneficios, sólo el mes de entrega del Beneficio, que debe ser igual al que se indicó en el Registro del Beneficiario titular.
                     </div>
@@ -145,6 +129,7 @@
 
                 <div class="widget-body">
                     <p class="lead">Actualmente existen<span class="numerorecords">{{ personascount }}</span>registros</p>
+                    <p><strong>Reportados a través de {{ padronesPF }} padrones</strong></p>
                     <div class="widget-main padding-6 no-padding-left no-padding-right text-justify jeig170">
                     La información referente a los Beneficiarios y a los apoyos entregados a personas físicas deberán reportarse agrupando los Registros de acuerdo al mes de la administración, así como el Beneficio otorgado.
                     </div>
@@ -170,6 +155,7 @@
 
             <div class="widget-body">
                 <p class="lead">Actualmente existen<span class="numerorecords">{{ poblacioncount }}</span>registros</p>
+                <p><strong>Reportados a través de {{ padronesPB }} padrones</strong></p>
                 <div class="widget-main padding-6 no-padding-left no-padding-right text-justify jeig170">
                     En la estructura de datos se almacenará la información de la Población Beneficiaria en Áreas de Atención Social. Entre los tipos de obras realizadas en las Áreas de Atención Social se encuentran: la construcción, mantenimiento o modificación de sistemas de agua potable, sistemas de drenaje y alcantarillado, plantas de tratamiento de aguas residuales, plantas purificadoras de agua, rellenos sanitarios, caminos, carreteras, pavimentación de calles, mejoramiento del entorno urbano, entre otras.
                 </div>

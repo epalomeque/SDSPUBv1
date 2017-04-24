@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
+from PIL import Image
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -11,15 +14,9 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http.response import HttpResponseRedirect, HttpResponse
-from models import TrabajosRealizados, \
-                   EstructuraPoblacion, \
-                   EstructuraActorSocial, \
-                   EstructuraPersonas, \
-                   EtapasTrabajos, \
-                   C_MUNICIPIO, \
-                   C_DEPENDENCIA, \
-                   C_ENTIDAD, \
-                   C_PROGRAMA_DGTIC
+from models import TrabajosRealizados, EstructuraPoblacion, EstructuraActorSocial, \
+                   EstructuraPersonas, EtapasTrabajos, C_MUNICIPIO, C_DEPENDENCIA, \
+                   C_ENTIDAD, C_PROGRAMA_DGTIC, C_PROGRAMA
 from validador.forms import nuevoTrabajoForm, nuevoRegistroActorSocial, nuevoRegistroPersona, nuevoRegistroPoblacion, selectDependenciaPoblacion
 
 
@@ -41,17 +38,112 @@ def municipios_json(request):
 
     return HttpResponse(json.dumps(lohmunicipioh))
 
+
+def cprogsxpadron(tipopadron):
+    count = C_PROGRAMA.objects.filter(TP_BENEFICIARIO=tipopadron).count()
+    return count
+
+
+# Devuelve lista de programas ordenadas por clave de programa
+def lprogsxpadron(tipopadron):
+    lista = C_PROGRAMA.objects.filter(TP_BENEFICIARIO=tipopadron).order_by('CD_PROGRAMA')
+    return lista.values('NB_PROGRAMA','ANIO','CD_PROGRAMA')
+
+
+# Devuelve lista de municipios en la entidad solicitada ordenadas por clave de municipio
+def lmunicipios(entidad):
+    lista = C_MUNICIPIO.objects.filter(CVE_ENT__CD_ENT=entidad).order_by('CV_MUN')
+    return lista.values('NO_MUN','CV_MUN')
+
+
+# Devuelve queryset de registros en etapa de cierre del padron solicitado
+def qrecordsEtapaCierre(tipopadron):
+    qrecords=''
+    if tipopadron == 'AS':
+        qrecords = EstructuraActorSocial.objects.filter(trabajo__Etapa__nombreEtapa='Cierre')
+    elif tipopadron == 'PF':
+        qrecords = EstructuraPersonas.objects.filter(trabajo__Etapa__nombreEtapa='Cierre')
+    elif tipopadron == 'PB':
+        qrecords = EstructuraPoblacion.objects.filter(trabajo__Etapa__nombreEtapa='Cierre')
+    return qrecords
+
+
+def qrecordsXmunicipio(tipopadron, mun, cd_padron=0):
+    qrecords=''
+    #print 'qrecordsXmunicipio('+str(tipopadron) + ', '+ str(mun)+', '+ str(cd_padron)+')'
+
+    #print '**'
+    #print 'INICIO qrecordsEtapaCierre(tipopadron)'
+    #print qrecordsEtapaCierre(tipopadron)
+    #print mun
+    #print qrecordsEtapaCierre(tipopadron).filter(CD_ENT_PAGO__CD_ENT=27).filter(CD_MUN_PAGO__CV_MUN=mun)
+    #print 'FIN qrecordsEtapaCierre(tipopadron)'
+    #print '**'
+    if tipopadron == 'AS' or tipopadron == 'PF':
+        qrecords = qrecordsEtapaCierre(tipopadron).filter(CD_ENT_PAGO__CD_ENT=27).filter(CD_MUN_PAGO__CV_MUN=mun)
+    elif tipopadron == 'PB':
+        qrecords = qrecordsEtapaCierre(tipopadron).filter(NOM_MUN_CV_MUN=mun, NOM_ENT__CD_ENT=27)
+
+
+    #print 'qrecords --' + str(qrecords)
+
+    if cd_padron != 0:
+        qrecordsxmun = qrecords.filter(CD_PADRON__CD_PROGRAMA__CD_PROGRAMA=cd_padron)
+    else:
+        qrecordsxmun = qrecords
+
+    #print 'cd_padron: ' + str(cd_padron)
+    #print qrecordsxmun
+
+    return qrecordsxmun
+
+
+def qrecordsXlocalidad (tipopadron, mun='000', loc='0000', cd_padron=0):
+    qrecords=''
+    if mun != '000' and loc != '0000':
+        qrecords = qrecordsXmunicipio(tipopadron, mun, cd_padron).filter(CD_LOC_PAGO=loc)
+
+    if cd_padron != 0:
+        qrecordsxloc = qrecords.filter(CD_PADRON__CD_PROGRAMA=cd_padron)
+    else:
+        qrecordsxloc = qrecords
+
+    return qrecordsxloc
+
+
+# Devuelve un diccionario con cantidad de registro por programa del municipio solicitado
+def registrosXmunicipio(tipopadron, mun):
+    ListaProgramas= lprogsxpadron(tipopadron)
+    # print '----- Inicia Lista de programas -----'
+    # print ListaProgramas
+    # print '----- Termina Lista de programas -----'
+    tabla = {}
+
+    print '----- registrosXmunicipio(' + str(tipopadron) + ', ' + str(mun) + ') -----'
+
+    for prog in ListaProgramas:
+        #print 'prog[NB_PROGRAMA]: ' + (prog['NB_PROGRAMA'])
+        #print 'prog[CD_PROGRAMA]: ' + str(prog['CD_PROGRAMA'])
+        tabla[prog['NB_PROGRAMA']] = qrecordsXmunicipio(tipopadron, mun, prog['CD_PROGRAMA']).count()
+
+    #print 'tabla -----'
+    print tabla
+
+    return tabla
+
+
 # Create your views here.
 def homemain(request):
     usuario_actual = request.user
-    actorestotal = EstructuraActorSocial.objects.filter(trabajo__Etapa__nombreEtapa='Cierre')
-    personastotal = EstructuraPersonas.objects.filter(trabajo__Etapa__nombreEtapa='Cierre')
-    poblaciontotal = EstructuraPoblacion.objects.filter(trabajo__Etapa__nombreEtapa='Cierre')
+
     userData = {
         'user': usuario_actual,
-        'actorescount':actorestotal.count(),
-        'personascount':personastotal.count(),
-        'poblacioncount':poblaciontotal.count()
+        'actorescount': qrecordsEtapaCierre('AS').count(),
+        'personascount': qrecordsEtapaCierre('PF').count(),
+        'poblacioncount': qrecordsEtapaCierre('PB').count(),
+        'padronesAS': cprogsxpadron('AS'),
+        'padronesPF': cprogsxpadron('PF'),
+        'padronesPB': cprogsxpadron('PB')
     }
     return render_to_response('homemain.html', userData, context_instance=RequestContext(request))
 
@@ -68,7 +160,10 @@ def showpoblacion(request):
         print nombredependencia
 
     if rmetodo == 'GET':
-        print rmetodo
+        print qrecordsEtapaCierre('PB')
+        print qrecordsXmunicipio('PB', mun='001')
+        print lprogsxpadron('PB')
+
 
     usuario_actual = request.user
     # UAdmin = usuario_actual.enlace.unidadAdministrativa
@@ -96,6 +191,7 @@ def showpobdependencia(request, dependencia_id):
 
     rmetodo = request.method
     nombredependencia = ''
+    usuario_actual = request.user
 
     if rmetodo == 'POST':
         print rmetodo
@@ -116,7 +212,33 @@ def showpobdependencia(request, dependencia_id):
 
 ## Muestra los datos de personas
 def showpersonas(request):
-    return render_to_response('showpoblacion.html', '', context_instance=RequestContext(request))
+    rmetodo = request.method
+    dependencia = HttpResponse()
+    nombredependencia = ''
+    regsXmunicipio = {}
+    ListaMunicipios = lmunicipios(27)
+    ListaProgramas = lprogsxpadron('PF')
+
+    for muni in ListaMunicipios:
+        #print '--'
+        #print '----- Inicia ' + str(muni['NO_MUN']) + '-----'
+        regsXmunicipio[muni['NO_MUN']] = registrosXmunicipio('PF', muni['CV_MUN'])
+        #print '----- Termina ' + str(muni['NO_MUN']) + '-----'
+
+    usuario_actual = request.user
+    dependencias = selectDependenciaPoblacion
+
+    data = {
+        'user': usuario_actual,
+        'listaprogs': ListaProgramas,
+        'listamunicipios': ListaMunicipios,
+        'registrosxmunicipio': regsXmunicipio,
+        'rmetodo': rmetodo,
+        'nombredependencia': nombredependencia,
+        'dependencias': dependencias,
+    }
+
+    return render_to_response('showpoblacion.html', data, context_instance=RequestContext(request))
 
 
 ## Muestra los datos de actores
@@ -187,6 +309,25 @@ def borrar(request, trabajo_id):
         return HttpResponseRedirect('/noautorizado')
 
     return HttpResponseRedirect('/validador')
+
+
+def NuevaInstanciaPadron(trabajo, UAdmin):
+    if trabajo.TipoPadron_id == 1:
+        formulario = nuevoRegistroActorSocial(
+            initial={'trabajo': trabajo.pk, 'CD_DEPENDENCIA': UAdmin.pk}
+            )
+        print '(NuevaInstancia) - Padron 1'
+    elif trabajo.TipoPadron_id == 2:
+        formulario = nuevoRegistroPersona(
+            initial={'trabajo': trabajo.pk, 'CD_DEPENDENCIA': UAdmin.pk, 'CD_ENT_PAGO': 27, 'NOM_ENT': 27}
+            )
+        print '(NuevaInstancia)  - Padron 2'
+    elif trabajo.TipoPadron_id == 3:
+        formulario = nuevoRegistroPoblacion(
+            initial={'trabajo': trabajo.pk, 'CD_DEPENDENCIA': UAdmin.pk}
+            )
+        print '(NuevaInstancia) - Padron 3'
+    return formulario
 
 
 ## Validacion
@@ -266,19 +407,14 @@ def validaragregar(request, trabajo_id):
             # process the data in form.cleaned_data as required
             el_trabajo = formulario.save()
             # redirect to a new URL:
-            return HttpResponseRedirect('/validador/validar/'+str(trabajo.pk))
+            if 'guarda' in request.POST:
+                return HttpResponseRedirect('/validador/validar/'+str(trabajo.pk))
+            elif 'guardayagrega' in request.POST:
+                formulario = NuevaInstanciaPadron(trabajo, UAdmin)
 
 
     elif request.method == 'GET':
-        if trabajo.TipoPadron_id == 1:
-            formulario = nuevoRegistroActorSocial( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk } )
-            print 'GET - Padron 1'
-        elif trabajo.TipoPadron_id == 2:
-            formulario = nuevoRegistroPersona( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk, 'CD_ENT_PAGO':27} )
-            print 'GET - Padron 2'
-        elif trabajo.TipoPadron_id == 3:
-            formulario = nuevoRegistroPoblacion( initial={'trabajo':trabajo_id, 'CD_DEPENDENCIA':UAdmin.pk} )
-            print 'GET - Padron 3'
+        formulario = NuevaInstanciaPadron(trabajo, UAdmin)
 
     # El valor del numero de pagina en el paginador
     page = ''
@@ -356,3 +492,57 @@ def validarverregistro(request, trabajo_id, idr):
         'campos': campos
     }
     return render_to_response('veridr.html', data, context_instance=RequestContext(request))
+
+
+def reporte_cierre(request, trabajo_id):
+
+    myimage = Image.open('static/assets/images/logo-SDS-cEscudo.png')
+
+
+    ElTrabajo = TrabajosRealizados.objects.get(pk = trabajo_id)
+    tipopadronid = ElTrabajo.TipoPadron_id
+
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    texto_inicio = 'Reporte de entrega de formato'
+    IdTrabajo = 'Identificador del trabajo:' + str(ElTrabajo.pk)
+    Dependencia = 'Dependencia a la que pertenece:' + ElTrabajo.Usuario.enlace.unidadAdministrativa.NB_DEPENDENCIA
+    Persona = 'Persona que lo envia: ' + ElTrabajo.Usuario.first_name + ' ' + ElTrabajo.Usuario.last_name
+    FechaEnvio = 'Fecha de envio: ' + str(ElTrabajo.UltimaActualizacion)
+    TipoPadron = 'Tipo de Padron: ' + ElTrabajo.TipoPadron.nombrePadron
+    Ejercicio = 'Ejercicio: ' + str(ElTrabajo.AnioEjercicio)
+    Trimestre = 'Trimestre: ' + ElTrabajo.Trimestre.nombrePeriodo
+
+    if tipopadronid == 1:  # Actor Social
+        registros = EstructuraActorSocial.objects.filter(trabajo=trabajo_id).order_by('pk')
+    elif tipopadronid == 2:  # Personas
+        registros = EstructuraPersonas.objects.filter(trabajo=trabajo_id).order_by('pk')
+    elif tipopadronid == 3:  # Poblacion
+        registros = EstructuraPoblacion.objects.filter(trabajo=trabajo_id).order_by('pk')
+
+    Registros = 'Cantidad de registros: ' + str(registros.count())
+
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+    p.setPageSize(letter)
+
+    p.drawString(50, 640, texto_inicio)
+    p.drawString(50, 640, IdTrabajo)
+    p.drawString(50, 620, Dependencia)
+    p.drawString(50, 600, Persona)
+    p.drawString(50, 580, FechaEnvio)
+    p.drawString(50, 560, TipoPadron)
+    p.drawString(50, 540, Ejercicio)
+    p.drawString(50, 520, Trimestre)
+    p.drawString(50, 500, Registros)
+    p.drawInlineImage(myimage,50,710, 140, 50)
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response

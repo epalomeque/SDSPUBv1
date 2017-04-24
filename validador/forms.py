@@ -5,20 +5,17 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.forms.extras import SelectDateWidget
-from validador.models import TrabajosRealizados, \
-    EstructuraActorSocial, \
-    EstructuraPersonas, \
-    EstructuraPoblacion, \
-    C_DEPENDENCIA, \
-    C_MUNICIPIO
-
+from validador.models import TrabajosRealizados, EstructuraActorSocial, \
+    EstructuraPersonas, EstructuraPoblacion, C_DEPENDENCIA, C_MUNICIPIO, C_LOCALIDAD
+from validador.misfunciones import DeIterableADict
 
 # from consultaCatalogos.models import *
 import os.path
 
 
-# CAT_MUNICIPIOS = C_MUNICIPIO.objects.filter(CVE_ENT = 27).values_list()
-# print CAT_MUNICIPIOS
+CAT_MUNICIPIOS = DeIterableADict(C_MUNICIPIO.objects.filter( CVE_ENT__CD_ENT=27 ).order_by('CV_MUN'),1,1)
+# CAT_MUNICIPIOS = # .values('CVE_ENT__NB_ENT','NO_MUN')
+print CAT_MUNICIPIOS
 
 ANIOS = {1900,1901,1902,1903,1904,1905,1906,1907,1908,1909,1910,1911,1912,1913,1914,1915,1916,1917,1918,1919,
          1920,1921,1922,1923,1924,1925,1926,1927,1928,1929,1930,1931,1932,1933,1934,1935,1936,1937,1938,1939,
@@ -32,6 +29,11 @@ MESES = {
     5:('Mayo'), 6:('Junio'), 7:('Julio'), 8:('Agosto'),
     9:('Septiembre'), 10:('Octubre'), 11:('Noviembre'), 12:('Diciembre')
 }
+#print MESES
+
+REGEX_CURP = r'^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}' \
+             '(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)' \
+             '[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$'
 
 class nuevoTrabajoForm(ModelForm):
     class Meta:
@@ -47,14 +49,51 @@ class nuevoTrabajoForm(ModelForm):
 
 
 class nuevoRegistroPersona(ModelForm):
+    CD_MUN_PAGO = forms.ModelChoiceField(
+        queryset= C_MUNICIPIO.objects.filter( CVE_ENT__CD_ENT=27 ).order_by('CV_MUN'),
+        label='Municipio de Pago',
+        empty_label= u'----------',
+        to_field_name= 'CV_MUN'
+    )
+    CD_LOC_PAGO = forms.ModelChoiceField(
+        queryset= C_LOCALIDAD.objects.all().order_by('CVE_MUN_id'),
+        label='Localidad de Pago',
+        empty_label=u'----------'
+    )
+    CVE_MUN = forms.ModelChoiceField(
+        queryset= C_MUNICIPIO.objects.filter( CVE_ENT__CD_ENT=27 ).order_by('CV_MUN'),
+        label='Nombre del Municipio',
+        empty_label= u'----------',
+        to_field_name= 'CV_MUN'
+    )
+    CVE_LOC = forms.ModelChoiceField(
+        queryset= C_LOCALIDAD.objects.all().order_by('CVE_MUN_id'),
+        label='Nombre de la Localidad',
+        empty_label=u'----------'
+    )
     class Meta:
         model = EstructuraPersonas
-        fields = '__all__'
+        fields = (
+            # Datos de la persona
+            'ID_HOGAR', 'ID_PERSONA', 'NB_PRIMER_AP', 'NB_SEGUNDO_AP', 'NB_NOMBRE',
+            'FH_NACIMIENTO', 'CD_SEXO', 'CD_EDO_NAC', 'NB_CURP', 'IN_HUELLA',
+            'IN_IRIS', 'CD_EDO_CIVIL',
+            # Datos de la institucion o padron
+            'CD_INSTITUCION', 'CD_PADRON', 'CD_INTRAPROGRAMA', 'FH_ALTA',
+            # Datos del beneficiario
+            'CD_ESTATUS_BEN', 'CD_ESTATUS_HOG', 'CD_MUN_PAGO', 'CD_LOC_PAGO', 'NB_PERIODO_CORRES',
+            'CD_TP_BENEFICIO', 'CD_TP_EXPEDICION', 'IN_TITULAR', 'CD_PARENTESCO', 'CD_TP_BEN_DET',
+            'NU_BENEFICIOS', 'CD_BENEFICIO', 'NU_IMP_MONETARIO', 'NU_MES_PAGO', 'CD_MET_PAGO',
+            'ID_AGRUPADOR', 'IN_CORRESP',
+            # Datos del domicilio geografico
+            'TIPOVIAL', 'NOMVIAL', 'CARRETERA', 'CAMINO', 'NUMEXTNUM1',
+            'NUMEXTNUM2', 'NUMEXTALF1', 'NUMEXTANT', 'NUMINTNUM', 'NUMINTALF', 'TIPOASEN',
+            'NOMASEN', 'CP', 'CVE_MUN', 'CVE_LOC', 'TIPOREF1', 'NOMREF1', 'TIPOREF2',
+            'NOMREF2', 'TIPOREF3', 'NOMREF3', 'DESCRUBIC', 'AGEB', 'CLAVE_MZNA', 'LONGITUD', 'LATITUD',
+            # Hidden Fields
+            'CD_DEPENDENCIA', 'CD_ENT_PAGO', 'NOM_ENT','trabajo'
+            )
         error_messages = {
-
-            # 'ID_CUIS_PS': {'required': 'Este campo es obligatorio'},
-            # 'ID_CUIS_SEDESOL': {'required': 'Este campo es obligatorio'},
-            # 'FH_LEVANTAMIENTO': {'required': 'Este campo es obligatorio'},
             'ID_HOGAR': {'required': 'Este campo es obligatorio'},
             'ID_PERSONA': {'required': 'Este campo es obligatorio'},
             'NB_PRIMER_AP': {'required': 'Este campo es obligatorio'},
@@ -69,13 +108,16 @@ class nuevoRegistroPersona(ModelForm):
             'IN_IRIS': {'required': 'Este campo es obligatorio'},
             'FH_ALTA': {'required': 'Este campo es obligatorio'},
         }
+        labels = {
+            'FH_ALTA':'Fecha de alta del beneficiario',
+        }
         widgets = {
             'ID_HOGAR': forms.TextInput(attrs={'placeholder': '0000','required': True}),
-            'NB_CURP': forms.TextInput(attrs={'placeholder':'XXXXAAMMDDXEEXXX00','required': True}),
+            'NB_CURP': forms.TextInput(attrs={'placeholder': '0000','required': True}),
             'ID_PERSONA': forms.TextInput(attrs={'placeholder': '0000','required': True}),
-            'NB_PRIMER_AP': forms.TextInput(attrs={'placeholder': 'Apellido Paterno','required': True}),
-            'NB_SEGUNDO_AP': forms.TextInput(attrs={'placeholder': 'Apellido Materno'}),
-            'NB_NOMBRE': forms.TextInput(attrs={'placeholder': 'Nombre(s)','required': True}),
+            'NB_PRIMER_AP': forms.TextInput(attrs={'placeholder': 'PRIMER APELLIDO','required': True}),
+            'NB_SEGUNDO_AP': forms.TextInput(attrs={'placeholder': 'SEGUNDO APELLIDO'}),
+            'NB_NOMBRE': forms.TextInput(attrs={'placeholder': 'NOMBRE(S)','required': True}),
             'FH_NACIMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:90px','required': True},
                                             months = MESES, years = ANIOS),
             'CD_SEXO': forms.Select(attrs={'required': True}),
@@ -83,15 +125,13 @@ class nuevoRegistroPersona(ModelForm):
             'CD_EDO_CIVIL': forms.Select(attrs={'required': True}),
             'IN_HUELLA': forms.Select(attrs={'required': True}),
             'IN_IRIS': forms.Select(attrs={'required': True}),
-            # 'ID_CUIS_PS': forms.TextInput(attrs={'placeholder': '0000'}),
-            # 'ID_CUIS_SEDESOL': forms.TextInput(attrs={'placeholder': '0000'}),
-            # 'FH_LEVANTAMIENTO': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:90px',
-            #                                             'required': True},
-            #                                     months = MESES, years = ANIOS),
             'FH_ALTA': SelectDateWidget(attrs={'style':'display:inline; width:20%; min-width:90px'},
                                         months=MESES, years=ANIOS),
-            'CD_MUN_PAGO': forms.Select(attrs={'required': True}),
+            'NB_PERIODO_CORRES': forms.TextInput(attrs={'placeholder': 'AAM_AAM','required': True}),
+            # Hidden widgets
             'CD_DEPENDENCIA': forms.HiddenInput,
+            'CD_ENT_PAGO': forms.HiddenInput,
+            'NOM_ENT': forms.HiddenInput,
             'trabajo': forms.HiddenInput
         }
 

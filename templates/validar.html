@@ -155,6 +155,8 @@
                         <h4><strong>Dependencia a la que pertenece:</strong><br /> {{ trabajo.Usuario.enlace.unidadAdministrativa.NB_DEPEN_CORTO }}</h4>
                         <h4><strong>Persona que lo envia:</strong><br /> {{ trabajo.Usuario.first_name }} {{ trabajo.Usuario.last_name}}</h4>
                         <h4><strong>Fecha de envio:</strong><br /> {{ trabajo.UltimaActualizacion }}</h4>
+                        <br />
+                        <h4><a href="/validador/reporte_cierre/{{ trabajo.pk }}">Descargar reporte de cierre</a> </h4>
                     </div>
                 </div>
             {# Estatus es INICIADO #}

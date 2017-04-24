@@ -38,6 +38,7 @@
                 </strong>
                 Existen errores en el formulario, por favor corrigelos e intenta enviar nuevamente
                 <br>
+                {{ formulario.errors }}
             </div>
             {% endif %}
 
@@ -63,7 +64,8 @@
 
             </div>
 
-            <input type="submit" value="Guardar" class="btn btn-app btn-primary radius-4 align-center">
+            <input type="submit" name="guarda" value="Guardar" class="btn btn-app btn-primary radius-4 align-center">
+            <input type="submit" name="guardayagrega" value="Guardar y agregar nuevo" class="width-20 btn btn-app btn-primary radius-4 align-center">
             </input>
 
     </form>
@@ -73,21 +75,11 @@
 
 {% block inlinescripts %}
   <script src="{% static "assets/js/djangoajax.js" %}"></script>
+  <script type="application/javascript">
 
-  {% if trabajo.TipoPadron_id == 2 %}
-  <script>
-
-
-    $("#id_NB_CURP").change(function () {
-      console.log( $(this).val() );
-    });
-    $("#id_CD_ENT_PAGO").change(function () {
-      console.log( $(this).val() );
-    });
-    $("#id_CD_MUN_PAGO").change(function () {
-      console.log( $(this).val() );
-    });
+    $('input[type=text]').val (function () {
+        return $(this).val.toUpperCase();
+    })
 
   </script>
-  {% endif %}
 {% endblock %}
